@@ -18,6 +18,8 @@ function createEventInFirebase(event) {
 
 
 
+
+
 function App() {
   const [eventList, loading, error] = useData("/events", getEventList);
   console.log("EVENT LIST");

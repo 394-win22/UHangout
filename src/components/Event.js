@@ -31,6 +31,16 @@ export default function Event({ event }) {
   );
 }
 
+const JoinButton = ({clickedEvent,setclickedEvent,checked}) =>(
+  <>
+    <input type="radio" id={clickedEvent} className="btn-check" checked={checked} autoComplete="off"
+      onChange={() => setclickedEvent(clickedEvent)} />
+    <label class="btn btn-success m-1 p-2" htmlFor={clickedEvent}>
+      join Event
+    </label>
+  </>
+);
+
 // const Event = ({ data }) => {
 //     return (
 //       <div style={{ border: "1px solid black" }}>
