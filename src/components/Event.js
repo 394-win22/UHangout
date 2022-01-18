@@ -47,11 +47,11 @@ const theme = createTheme({
 
 const JoinButton = ({clickedEvent,setclickedEvent,checked}) =>(
   <>
-    <ThemeProvider theme={theme}>
-    <input type="radio" id={clickedEvent} className="btn-check" checked={checked} autoComplete="off"
-      onChange={() => setclickedEvent(clickedEvent)} />
-
     
+    {/* <input type="radio" id={clickedEvent} className="btn-check" checked={checked} autoComplete="off"
+      onChange={() => setclickedEvent(clickedEvent)} /> */}
+
+    <ThemeProvider theme={theme}>
     <Button variant="contained" color='secondary' htmlFor={clickedEvent}>
     Join Event
     </Button>
