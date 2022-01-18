@@ -6,8 +6,10 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { purple } from '@mui/material/colors';
 
-export default function Event({ event }) {
+export default function Event({ event, clickedEvent, setclickedEvent}) {
   console.log(event);
   return (
     <Card sx={{ maxWidth: 345, mb: 3 }}>
@@ -24,20 +26,36 @@ export default function Event({ event }) {
           Description: {event.description}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
+      <CardActions style={{justifyContent: 'center'}}>
+        <JoinButton key={event} clickedEvent={event} setclickedEvent={setclickedEvent} checked={event === clickedEvent} />
       </CardActions>
     </Card>
   );
 }
+const theme = createTheme({
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      main: purple[500],
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: '#11cb5f',
+    },
+  },
+});
 
 const JoinButton = ({clickedEvent,setclickedEvent,checked}) =>(
   <>
+    <ThemeProvider theme={theme}>
     <input type="radio" id={clickedEvent} className="btn-check" checked={checked} autoComplete="off"
       onChange={() => setclickedEvent(clickedEvent)} />
-    <label class="btn btn-success m-1 p-2" htmlFor={clickedEvent}>
-      join Event
-    </label>
+
+    
+    <Button variant="contained" color='secondary' htmlFor={clickedEvent}>
+    Join Event
+    </Button>
+    </ThemeProvider>
   </>
 );
 

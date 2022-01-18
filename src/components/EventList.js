@@ -1,3 +1,5 @@
+import React from 'react';
+import { useState } from 'react';
 import Event from "./Event";
 import Box from "@mui/material/Box";
 
@@ -45,10 +47,11 @@ const data = [
 ];
 
 const EventList = () => {
+  const [clickedEvent, setclickedEvent] = useState();
   return (
     <Box sx={{ mx: "auto", width: 300 }}>
       {data.map((anEvent) => (
-        <Event event={anEvent}></Event>
+        <Event event={anEvent, clickedEvent, setclickedEvent}></Event>
       ))}
     </Box>
   );
