@@ -43,15 +43,14 @@ const data = [
     date: "Thursday, Jan 7",
     description: "Looking for 5 people",
     host: "Derek",
-  }
+  },
 ];
 
-const EventList = () => {
-  const [clickedEvent, setclickedEvent] = useState();
+const EventList = ({ events }) => {
   return (
     <Box sx={{ mx: "auto", width: 300 }}>
-      {data.map((anEvent) => (
-        <Event event={anEvent} clickedEvent={clickedEvent} setclickedEvent={setclickedEvent}></Event>
+      {events.map((event) => (
+        <Event event={event}></Event>
       ))}
     </Box>
   );
