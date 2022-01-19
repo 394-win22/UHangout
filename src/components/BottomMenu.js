@@ -14,6 +14,9 @@ import { TextField } from "@mui/material";
 /* For "Create" Button in Modal Box */
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
+import DateAdapter from '@mui/lab/AdapterMoment';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 
 const useStyles = makeStyles({
   container: {
@@ -23,12 +26,16 @@ const useStyles = makeStyles({
     transform: "translate(-50%, -50%)",
     background: "white",
     width: "350px",
-    height: "500px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
+    padding: "20px 0 20px 0",
+    borderRadius: "10px"
   },
+  title: {
+    textAlign: "center",
+  }
 });
 
 const BottomMenu = () => {
@@ -39,7 +46,10 @@ const BottomMenu = () => {
   const handleClose = () => setOpen(false);
 
   const [name, setName] = useState("");
-  const [max, setMax] = useState("");
+  const [max, setMax] = useState(4);
+  const [location, setLocation] = useState("");
+  const [duration, setDuration] = useState(1);
+  const [time, setTime] = useState(new Date());
   const [description, setDescription] = useState("");
   /*
     const onCreate = async (event: FormEvent<HTMLFormElement>) => {
@@ -80,6 +90,9 @@ const BottomMenu = () => {
           sx={{ "& .MuiTextField-root": { m: 2, width: "25ch" } }}
         >
           <Box className={classes.container}>
+            <Typography variant="h5" component="h5" align="center" className={classes.title}>
+              Add New Event
+            </Typography>
             <TextField
               required
               value={name}
@@ -91,10 +104,34 @@ const BottomMenu = () => {
             <TextField
               value={max}
               onChange={(event) => setMax(event.target.value)}
-              label="No. of People"
+              label="Max # of People"
               type="number"
               InputLabelProps={{ shrink: true }}
             />
+            <TextField
+              value={location}
+              onChange={(event) => setLocation(event.target.value)}
+              label="Event Location"
+              InputLabelProps={{ shrink: true }}
+            />
+            <TextField
+              value={duration}
+              onChange={(event) => setDuration(event.target.value)}
+              label="Duration (Hours)"
+              type="number"
+              InputLabelProps={{ shrink: true }}
+            />
+            <LocalizationProvider dateAdapter={DateAdapter}>
+              <DateTimePicker
+                renderInput={(props) => <TextField {...props} />}
+                label="DateTimePicker"
+                value={time}
+                onChange={(newValue) => {
+                  setTime(newValue)
+                  console.log(newValue.valueOf());
+                }}
+              />
+            </LocalizationProvider>
             <TextField
               value={description}
               onChange={(event) => setDescription(event.target.value)}
