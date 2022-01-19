@@ -51,7 +51,7 @@ const EventList = () => {
   return (
     <Box sx={{ mx: "auto", width: 300 }}>
       {data.map((anEvent) => (
-        <Event event={anEvent, clickedEvent, setclickedEvent}></Event>
+        <Event event={anEvent} clickedEvent={clickedEvent} setclickedEvent={setclickedEvent}></Event>
       ))}
     </Box>
   );
