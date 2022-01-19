@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 const firebase = initializeApp(firebaseConfig);
-const database = getDatabase(firebase);
+export const database = getDatabase(firebase);
 
 export const useData = (path, transform) => {
   const [data, setData] = useState();
