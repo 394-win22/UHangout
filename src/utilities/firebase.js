@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { useState, useEffect } from "react";
 import { getDatabase, onValue, ref, set, push } from "firebase/database";
+import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut, useAuthState} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7mpjxeDj2hYyFJ4JkXhctKL2lzjRb5tM",
@@ -12,8 +13,37 @@ const firebaseConfig = {
   appId: "1:435606287641:web:56be8346407796c3470188",
 };
 
-const firebase = initializeApp(firebaseConfig);
+export const firebase = initializeApp(firebaseConfig);
 export const database = getDatabase(firebase);
+
+
+
+
+
+export const signInWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    prompt: 'select_account'
+  });
+
+  signInWithPopup(getAuth(firebase), provider);
+};
+
+const firebaseSignOut = () => signOut(getAuth(firebase));
+
+export { firebaseSignOut as signOut };
+
+export const useUserState = () => {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    onIdTokenChanged(getAuth(firebase), setUser);
+  }, []);
+
+  return [user];
+};
+
+
 
 export const useData = (path, transform) => {
   const [data, setData] = useState();

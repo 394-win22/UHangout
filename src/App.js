@@ -1,7 +1,9 @@
 import "./App.css";
 import { useEffect } from "react";
 import EventList from "./components/EventList";
-import { useData } from "./utilities/firebase.js";
+import { useData, signInWithGoogle, useUserState, signOut} from "./utilities/firebase.js";
+
+
 
 import BottomMenu from "./components/BottomMenu";
 
@@ -11,23 +13,27 @@ function getEventList(events) {
   });
 }
 
+const SignInButton = () => (
+  <button className="btn btn-secondary btn-sm"
+      onClick={() => signInWithGoogle()}>
+    Sign In
+  </button>
+);
+
+const SignOutButton = () => (
+  <button className="btn btn-secondary btn-sm"
+      onClick={() => signOut()}>
+    Sign Out
+  </button>
+);
+
 function App() {
   const [eventList, loading, error] = useData("/events", getEventList);
+  
 
-  // useEffect(() => {
-  //   const sampleEventData = {
-  //     description: "Looking for 5 people to join me for sailing",
-  //     duration: 2,
-  //     location: "South Beach",
-  //     max: 6,
-  //     name: "Sailing at South Beach",
-  //     people: ["host's name", "firstName2 lastName2"],
-  //     photoUrl: "firebaseHostingLinkForPhoto",
-  //     time: 1646957153,
-  //   };
+  const [user] = useUserState();
+  console.log(user);
 
-  //   createEventInFirebase(sampleEventData);
-  // }, []);
 
   if (error) return <h1>{error}</h1>;
   if (loading) return <h1>Loading the events...</h1>;
@@ -35,6 +41,7 @@ function App() {
   return (
     <div className="App">
       <h1> UHangout</h1>
+      {(user) ? <SignOutButton/> : <SignInButton />}
       <EventList events={eventList}></EventList>
       <br />
       <br />
