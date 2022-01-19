@@ -14,7 +14,7 @@ export default function Event({ event, clickedEvent, setclickedEvent }) {
   console.log("POSITION OF INTERSSST");
   console.log(event);
   const currCapacity = Object.keys(event.people).length;
-  [joined, setJoined] = useState(false); // handle can't-join-twice later
+// [joined, setJoined] = useState(false); // handle can't-join-twice later
   return (
     <Card sx={{ maxWidth: 345, mb: 3 }}>
       <CardHeader title={event.name} subheader={event.date}></CardHeader>
