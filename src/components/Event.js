@@ -6,8 +6,11 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { purple } from '@mui/material/colors';
+import { pushData } from "../utilities/firebase";
 
-export default function Event({ event }) {
+export default function Event({ event, clickedEvent, setclickedEvent}) {
   console.log(event);
   return (
     <Card sx={{ maxWidth: 345, mb: 3 }}>
@@ -24,12 +27,63 @@ export default function Event({ event }) {
           Description: {event.description}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
+      <CardActions style={{justifyContent: 'center'}}>
+        <JoinButton key={event} event = {event} clickedEvent={clickedEvent} setclickedEvent={setclickedEvent} checked={event === clickedEvent} />
       </CardActions>
     </Card>
   );
 }
+const theme = createTheme({
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      main: purple[500],
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: '#11cb5f',
+    },
+  },
+});
+
+// const JoinButton = ({event, clickedEvent,setclickedEvent,checked}) =>(
+//   <>
+    
+//     {/* <input type="radio" id={clickedEvent} className="btn-check" checked={checked} autoComplete="off"
+//       onChange={() => setclickedEvent(clickedEvent)} /> */}
+
+//     <ThemeProvider theme={theme}>
+//     <Button onClick={()=>updatePeopleData(clickedEvent)} 
+//       variant="contained" color='secondary' htmlFor={clickedEvent}>
+//     Join Event
+//     </Button>
+//     </ThemeProvider>
+//   </>
+  
+// );
+
+const JoinButton = ({event,clickedEvent,setclickedEvent,checked}) =>{
+  function updatePeopleData(event){
+    console.log("position of interest")
+    console.log(event);
+    pushData('events/'+ event.id + '/people',"newPerson");
+  }
+
+  return(
+    
+    // {/* <input type="radio" id={clickedEvent} className="btn-check" checked={checked} autoComplete="off"
+    //   onChange={() => setclickedEvent(clickedEvent)} /> */}
+    <>
+    <ThemeProvider theme={theme}>
+    <Button onClick={()=>updatePeopleData(event)} variant="contained" color='secondary' htmlFor={clickedEvent}>
+    Join Event
+    </Button>
+    </ThemeProvider>
+    </>
+  )
+};
+
+
 
 // const Event = ({ data }) => {
 //     return (
