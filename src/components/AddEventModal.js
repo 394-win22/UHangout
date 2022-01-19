@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -10,6 +10,7 @@ import SendIcon from "@mui/icons-material/Send";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
+import { pushData } from "../utilities/firebase";
 const useStyles = makeStyles({
   container: {
     position: "absolute",
@@ -29,16 +30,40 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
 });
+function createEventInFirebase(event) {
+  pushData("/events", event);
+}
+
 const AddEventModal = ({ open, handleOpen, handleClose }) => {
   const classes = useStyles();
+  const defaultValues = {
+    description: "",
+    duration: 0,
+    location: "",
+    max: 2,
+    name: "",
+    people: ["host's name"],
+    photoUrl: "",
+    time: new Date(),
+  };
 
-  const [name, setName] = useState("");
-  const [max, setMax] = useState(4);
-  const [location, setLocation] = useState("");
-  const [duration, setDuration] = useState(1);
-  const [time, setTime] = useState(new Date());
-  const [description, setDescription] = useState("");
+  const [formValues, setFormValues] = useState(defaultValues);
 
+  const handleInputChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+  const handleSubmit = () => {
+    createEventInFirebase(formValues);
+    setFormValues(defaultValues);
+    //NEED TO RERENDER
+    handleClose();
+  };
   return (
     <Modal
       open={open}
@@ -58,46 +83,60 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
         </Typography>
         <TextField
           required
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          helperText="Please enter event name"
+          name="name"
+          value={formValues.name}
+          onChange={handleInputChange}
           label="Event Name"
           variant="outlined"
         />
         <TextField
-          value={max}
-          onChange={(event) => setMax(event.target.value)}
+          required
+          name="max"
+          value={formValues.max}
+          onChange={handleInputChange}
           label="Max # of People"
           type="number"
           InputLabelProps={{ shrink: true }}
         />
         <TextField
-          value={location}
-          onChange={(event) => setLocation(event.target.value)}
+          required
+          name="location"
+          value={formValues.location}
+          onChange={handleInputChange}
           label="Event Location"
-          InputLabelProps={{ shrink: true }}
         />
         <TextField
-          value={duration}
-          onChange={(event) => setDuration(event.target.value)}
+          name="duration"
+          value={formValues.duration}
+          onChange={handleInputChange}
           label="Duration (Hours)"
           type="number"
+          InputLabelProps={{ shrink: true }}
+        />{" "}
+        <TextField
+          name="photoUrl"
+          value={formValues.photoUrl}
+          onChange={handleInputChange}
+          label="Photo Image Link"
           InputLabelProps={{ shrink: true }}
         />
         <LocalizationProvider dateAdapter={DateAdapter}>
           <DateTimePicker
+            required
+            name="time"
             renderInput={(props) => <TextField {...props} />}
-            label="DateTimePicker"
-            value={time}
+            label="Date & Time"
+            value={formValues.time}
             onChange={(newValue) => {
-              setTime(newValue);
-              console.log(newValue.valueOf());
+              setFormValues({ ...formValues, time: newValue.toJSON() });
             }}
           />
         </LocalizationProvider>
         <TextField
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
+          required
+          name="description"
+          value={formValues.description}
+          onChange={handleInputChange}
           label="Description"
           multiline
           rows={4}
@@ -105,10 +144,9 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
         <Button
           variant="contained"
           endIcon={<SendIcon />}
-          onClick={console.log("Create Event")}
+          onClick={handleSubmit}
         >
-          {" "}
-          Create{" "}
+          Create
         </Button>
         <Button onClick={() => handleClose()}> Cancel </Button>
       </Box>

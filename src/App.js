@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect } from "react";
 import EventList from "./components/EventList";
-import { useData, pushData } from "./utilities/firebase.js";
+import { useData } from "./utilities/firebase.js";
 
 import BottomMenu from "./components/BottomMenu";
 
@@ -9,10 +9,6 @@ function getEventList(events) {
   return Object.entries(events).map(([eventId, eventObj]) => {
     return { ...eventObj, id: eventId };
   });
-}
-
-function createEventInFirebase(event) {
-  pushData("/events", event);
 }
 
 function App() {
