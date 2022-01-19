@@ -1,3 +1,5 @@
+import React from 'react';
+import { useState } from 'react';
 import Event from "./Event";
 import Box from "@mui/material/Box";
 
@@ -41,14 +43,14 @@ const data = [
     date: "Thursday, Jan 7",
     description: "Looking for 5 people",
     host: "Derek",
-  }
+  },
 ];
 
-const EventList = () => {
+const EventList = ({ events }) => {
   return (
     <Box sx={{ mx: "auto", width: 300 }}>
-      {data.map((anEvent) => (
-        <Event event={anEvent}></Event>
+      {events.map((event) => (
+        <Event event={event}></Event>
       ))}
     </Box>
   );
