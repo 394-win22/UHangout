@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect } from "react";
 import EventList from "./components/EventList";
 import { useData, signInWithGoogle, useUserState, signOut} from "./utilities/firebase.js";
+import Box from "@mui/material/Box";
 
 
 
@@ -13,12 +14,28 @@ function getEventList(events) {
   });
 }
 
-const SignInButton = () => (
+function getUserList(users) {
+  return Object.entries(users).map(([uid, userObj]) => {
+    return { ...userObj, uid: uid };
+  });
+}
+
+const signIn = async () => {
+  await signInWithGoogle();
+  // push photoURL, displayName, email, ... to the users db
+}
+
+const SignInButton = () => {
+  const [userList, loading, error] = useData("/users", getUserList);
+  console.log(userList); // make sure get users correctly
+
+  return (
   <button className="btn btn-secondary btn-sm"
-      onClick={() => signInWithGoogle()}>
+      onClick={signIn()}>
     Sign In
   </button>
-);
+  );
+};
 
 const SignOutButton = () => (
   <button className="btn btn-secondary btn-sm"
@@ -41,8 +58,13 @@ function App() {
   return (
     <div className="App">
       <h1> UHangout</h1>
-      {(user) ? <SignOutButton/> : <SignInButton />}
-      <EventList events={eventList}></EventList>
+      {(user)
+      ? 
+        <Box>
+          <SignOutButton/>
+          <EventList events={eventList} />
+        </Box>
+      : <SignInButton />}
       <br />
       <br />
       <br />

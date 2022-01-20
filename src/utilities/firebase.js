@@ -18,8 +18,7 @@ export const database = getDatabase(firebase);
 
 
 
-
-
+/* authentication functions */
 export const signInWithGoogle = () => {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
@@ -43,8 +42,7 @@ export const useUserState = () => {
   return [user];
 };
 
-
-
+/* data functions */
 export const useData = (path, transform) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
