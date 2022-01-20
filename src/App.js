@@ -34,7 +34,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1> UHangout</h1>
+      <h1> UHangout </h1>
       <EventList events={eventList}></EventList>
       <br />
       <br />

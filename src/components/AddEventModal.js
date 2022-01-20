@@ -44,7 +44,7 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
     name: "",
     people: ["host's name"],
     photoUrl: "",
-    time: new Date(),
+    eventTime: new Date(),
   };
 
   const [formValues, setFormValues] = useState(defaultValues);
@@ -58,13 +58,14 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
       [name]: value,
     });
   };
-  const handleSubmit = (values) => {
-      console.log(values)
+  const handleSubmit = () => {
+    console.log("SUBMIT");
+    console.log(formValues);
     createEventInFirebase(formValues);
     setFormValues(defaultValues);
     //NEED TO RERENDER
     handleClose();
-  }
+  };
 
   return (
     <Modal
@@ -76,23 +77,23 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
     >
       <Box className={classes.container}>
         <form onSubmit={handleSubmit}>
-            <Typography
+          <Typography
             variant="h5"
             component="h5"
             align="center"
             className={classes.title}
-            >
+          >
             Add New Event
-            </Typography>
-            <TextField
+          </Typography>
+          <TextField
             required
             name="name"
             value={formValues.name}
             onChange={handleInputChange}
             label="Event Name"
             variant="outlined"
-            />
-            <TextField
+          />
+          <TextField
             required
             name="max"
             value={formValues.max}
@@ -100,27 +101,30 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
             label="Max # of People"
             type="number"
             InputLabelProps={{ shrink: true }}
-            />
-            <TextField
+          />
+          <TextField
             required
             name="location"
             value={formValues.location}
             onChange={handleInputChange}
             label="Event Location"
+          />
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <DateTimePicker
+              required
+              name="eventTime"
+              renderInput={(props) => <TextField {...props} />}
+              label="Date & Time"
+              value={formValues.eventTime}
+              onChange={(newValue) => {
+                setFormValues({
+                  ...formValues,
+                  eventTime: newValue.toJSON(),
+                });
+              }}
             />
-            <LocalizationProvider required dateAdapter={DateAdapter}>
-                <DateTimePicker
-                    required
-                    name="time"
-                    renderInput={(props) => <TextField {...props} />}
-                    label="Date & Time"
-                    value={formValues.time}
-                    onChange={(newValue) => {
-                    setFormValues({ ...formValues, time: newValue.toJSON() });
-                    }}
-                />
-            </LocalizationProvider>
-            <TextField
+          </LocalizationProvider>
+          <TextField
             required
             name="duration"
             value={formValues.duration}
@@ -128,15 +132,15 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
             label="Duration (Hours)"
             type="number"
             InputLabelProps={{ shrink: true }}
-            />{" "}
-            <TextField
+          />{" "}
+          <TextField
             name="photoUrl"
             value={formValues.photoUrl}
             onChange={handleInputChange}
-            label="Photo Image Link"
+            label="Custom Image Link"
             InputLabelProps={{ shrink: true }}
-            />
-            <TextField
+          />
+          <TextField
             required
             name="description"
             value={formValues.description}
@@ -144,15 +148,14 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
             label="Description"
             multiline
             rows={4}
-            />
-            <Button
-                variant="contained"
-                endIcon={<SendIcon />}
-                type="submit"
-            >
+          />
+          <Button variant="contained" endIcon={<SendIcon />} type="submit">
             Create
-            </Button>
-            <Button onClick={() => handleClose()}> Cancel </Button>
+          </Button>
+          <Button type="button" onClick={() => handleClose()}>
+            {" "}
+            Cancel{" "}
+          </Button>
         </form>
       </Box>
     </Modal>
