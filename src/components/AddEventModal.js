@@ -44,7 +44,7 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
     name: "",
     people: ["host's name"],
     photoUrl: "",
-    time: new Date(),
+    eventTime: new Date(),
   };
 
   const [formValues, setFormValues] = useState(defaultValues);
@@ -59,11 +59,14 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
     });
   };
   const handleSubmit = () => {
+    console.log("SUBMIT");
+    console.log(formValues);
     createEventInFirebase(formValues);
     setFormValues(defaultValues);
     //NEED TO RERENDER
     handleClose();
   };
+
   return (
     <Modal
       open={open}
@@ -73,82 +76,87 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
       sx={{ "& .MuiTextField-root": { m: 2, width: "25ch" } }}
     >
       <Box className={classes.container}>
-        <Typography
-          variant="h5"
-          component="h5"
-          align="center"
-          className={classes.title}
-        >
-          Add New Event
-        </Typography>
-        <TextField
-          required
-          name="name"
-          value={formValues.name}
-          onChange={handleInputChange}
-          label="Event Name"
-          variant="outlined"
-        />
-        <TextField
-          required
-          name="max"
-          value={formValues.max}
-          onChange={handleInputChange}
-          label="Max # of People"
-          type="number"
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          required
-          name="location"
-          value={formValues.location}
-          onChange={handleInputChange}
-          label="Event Location"
-        />
-        <TextField
-          name="duration"
-          value={formValues.duration}
-          onChange={handleInputChange}
-          label="Duration (Hours)"
-          type="number"
-          InputLabelProps={{ shrink: true }}
-        />{" "}
-        <TextField
-          name="photoUrl"
-          value={formValues.photoUrl}
-          onChange={handleInputChange}
-          label="Photo Image Link"
-          InputLabelProps={{ shrink: true }}
-        />
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <DateTimePicker
+        <form onSubmit={handleSubmit} style={{textAlign:"center"}}>
+          <Typography
+            variant="h5"
+            component="h5"
+            align="center"
+            className={classes.title}
+          >
+            Add New Event
+          </Typography>
+          <TextField
             required
-            name="time"
-            renderInput={(props) => <TextField {...props} />}
-            label="Date & Time"
-            value={formValues.time}
-            onChange={(newValue) => {
-              setFormValues({ ...formValues, time: newValue.toJSON() });
-            }}
+            name="name"
+            value={formValues.name}
+            onChange={handleInputChange}
+            label="Event Name"
+            variant="outlined"
           />
-        </LocalizationProvider>
-        <TextField
-          required
-          name="description"
-          value={formValues.description}
-          onChange={handleInputChange}
-          label="Description"
-          multiline
-          rows={4}
-        />
-        <Button
-          variant="contained"
-          endIcon={<SendIcon />}
-          onClick={handleSubmit}
-        >
-          Create
-        </Button>
-        <Button onClick={() => handleClose()}> Cancel </Button>
+          <TextField
+            required
+            name="max"
+            value={formValues.max}
+            onChange={handleInputChange}
+            label="Max # of People"
+            type="number"
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            required
+            name="location"
+            value={formValues.location}
+            onChange={handleInputChange}
+            label="Event Location"
+          />
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <DateTimePicker
+              required
+              name="eventTime"
+              renderInput={(props) => <TextField {...props} />}
+              label="Date & Time"
+              value={formValues.eventTime}
+              onChange={(newValue) => {
+                setFormValues({
+                  ...formValues,
+                  eventTime: newValue.toJSON(),
+                });
+              }}
+            />
+          </LocalizationProvider>
+          <TextField
+            required
+            name="duration"
+            value={formValues.duration}
+            onChange={handleInputChange}
+            label="Duration (Hours)"
+            type="number"
+            InputLabelProps={{ shrink: true }}
+          />{" "}
+          <TextField
+            name="photoUrl"
+            value={formValues.photoUrl}
+            onChange={handleInputChange}
+            label="Custom Image Link"
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            required
+            name="description"
+            value={formValues.description}
+            onChange={handleInputChange}
+            label="Description"
+            multiline
+            rows={4}
+          />
+          <Button variant="contained" endIcon={<SendIcon />} type="submit">
+            Create
+          </Button>
+          <Button type="button" onClick={() => handleClose()}>
+            {" "}
+            Cancel{" "}
+          </Button>
+        </form>
       </Box>
     </Modal>
   );

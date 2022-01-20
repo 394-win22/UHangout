@@ -6,6 +6,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import moment from "moment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { purple } from "@mui/material/colors";
 import { pushData } from "../utilities/firebase";
@@ -15,19 +16,27 @@ export default function Event({ event, clickedEvent, setclickedEvent }) {
   // [joined, setJoined] = useState(false); // handle can't-join-twice later
   return (
     <Card sx={{ maxWidth: 345, mb: 3 }}>
-      <CardHeader title={event.name} subheader={event.date}></CardHeader>
+      <CardHeader
+        title={event.name}
+        subheader={event.date}
+        subheader={`Hosted by ${event.people[0]}`}
+      ></CardHeader>
       {event.photoUrl && (
         <CardMedia
           component="img"
           height="140"
-          image={event.photoUrl}
+          image={
+            event.photoUrl !== ""
+              ? event.photoUrl
+              : "https://www.liveabout.com/thmb/hUZh9JL_8sFJxjCTnhMHf9dtY38=/2121x1414/filters:fill(auto,1)/GettyImages-906502488-f2360d9eddcb4e0d91b907be2b6f1f7a.jpg"
+          }
           alt={event.name}
         />
       )}
 
       <CardContent>
         <Typography gutterBottom variant="body" component="div">
-          Time: {event.time}
+          Time: {moment(event.eventTime).format("MMMM Do YYYY, h:mm a")}
         </Typography>
         <Typography gutterBottom variant="body" component="div">
           Capacity: {currCapacity} / {event.max}
