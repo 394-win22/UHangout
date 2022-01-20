@@ -88,5 +88,9 @@ export const pushData = (path, value) => {
 };
 
 export const saveUserToDb = (userObject) => {
-  pushData("/users/" + userObject.uid);
+  setData("/users/" + userObject.uid, {
+    displayName: userObject.displayName,
+    email: userObject.email,
+    photoURL: userObject.photoURL
+  });
 }

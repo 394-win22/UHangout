@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect } from "react";
 import EventList from "./components/EventList";
-import { useData, signInWithGoogle, useUserState, signOut} from "./utilities/firebase.js";
+import { useData, signInWithGoogle, useUserState, signOut, saveUserToDb} from "./utilities/firebase.js";
 import Box from "@mui/material/Box";
 
 
@@ -47,20 +47,22 @@ function App() {
   const [user] = useUserState();
   // console.log(user);
 
-  
+
   useEffect(() => {
     console.log("userlist printed", userList); // make sure get users correctly
   }, [userList]);
 
   useEffect(() => {
     if (!userList) return;
+    if (!user) return;
 
     const userCount = userList.filter((entry)=>
       entry.uid === user.uid
     ).length;
-    
-    if (user && userCount === 0) {
+
+    if (userCount === 0) {
       console.log("no user found in db");
+      saveUserToDb(user);
     }
   }, [userList, user]);
 
@@ -72,7 +74,7 @@ function App() {
     <div className="App">
       <h1> UHangout</h1>
       {(user)
-      ? 
+      ?
         <Box>
           <SignOutButton/>
           <EventList events={eventList} />
