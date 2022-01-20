@@ -26,7 +26,7 @@ export default function Event({ event, clickedEvent, setclickedEvent }) {
           component="img"
           height="140"
           image={
-            event.photoUrl.trim() !== ""
+            event.photoUrl !== ""
               ? event.photoUrl
               : "https://www.liveabout.com/thmb/hUZh9JL_8sFJxjCTnhMHf9dtY38=/2121x1414/filters:fill(auto,1)/GettyImages-906502488-f2360d9eddcb4e0d91b907be2b6f1f7a.jpg"
           }

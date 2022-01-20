@@ -76,7 +76,7 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
       sx={{ "& .MuiTextField-root": { m: 2, width: "25ch" } }}
     >
       <Box className={classes.container}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{textAlign:"center"}}>
           <Typography
             variant="h5"
             component="h5"
