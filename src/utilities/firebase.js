@@ -86,3 +86,7 @@ export const pushData = (path, value) => {
   const objRef = push(listRef);
   set(objRef, value);
 };
+
+export const saveUserToDb = (userObject) => {
+  pushData("/users/" + userObject.uid);
+}

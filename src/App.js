@@ -20,18 +20,11 @@ function getUserList(users) {
   });
 }
 
-const signIn = async () => {
-  await signInWithGoogle();
-  // push photoURL, displayName, email, ... to the users db
-}
 
 const SignInButton = () => {
-  const [userList, loading, error] = useData("/users", getUserList);
-  console.log(userList); // make sure get users correctly
-
   return (
   <button className="btn btn-secondary btn-sm"
-      onClick={signIn()}>
+      onClick={ signInWithGoogle}>
     Sign In
   </button>
   );
@@ -44,16 +37,36 @@ const SignOutButton = () => (
   </button>
 );
 
+
+
 function App() {
-  const [eventList, loading, error] = useData("/events", getEventList);
-  
+  const [eventList, eventListLoading, eventListError] = useData("/events", getEventList);
 
+
+  const [userList, userListLoading, userListError] = useData("/users", getUserList);
   const [user] = useUserState();
-  console.log(user);
+  // console.log(user);
+
+  
+  useEffect(() => {
+    console.log("userlist printed", userList); // make sure get users correctly
+  }, [userList]);
+
+  useEffect(() => {
+    if (!userList) return;
+
+    const userCount = userList.filter((entry)=>
+      entry.uid === user.uid
+    ).length;
+    
+    if (user && userCount === 0) {
+      console.log("no user found in db");
+    }
+  }, [userList, user]);
 
 
-  if (error) return <h1>{error}</h1>;
-  if (loading) return <h1>Loading the events...</h1>;
+  if (eventListError || userListError) return <h1>{eventListError + userListError}</h1>;
+  if (eventListLoading || userListLoading) return <h1>Loading the events...</h1>;
 
   return (
     <div className="App">
