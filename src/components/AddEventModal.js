@@ -37,7 +37,7 @@ function createEventInFirebase(event) {
   pushData("/events", event);
 }
 
-const AddEventModal = ({ open, handleOpen, handleClose }) => {
+const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const classes = useStyles();
   const defaultValues = {
     description: "",
@@ -45,7 +45,7 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
     location: "",
     max: 2,
     name: "",
-    people: ["host's name"],
+    people: [user.uid],
     photoUrl: "",
     eventTime: null,
   };

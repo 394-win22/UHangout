@@ -11,7 +11,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { purple } from "@mui/material/colors";
 import { pushData } from "../utilities/firebase";
 
-export default function Event({ event, clickedEvent, setclickedEvent }) {
+const getUserFromUID = (uid, userList) =>{
+  return userList.filter(user=>user.uid===uid)[0]
+}
+
+export default function Event({ event, userList, clickedEvent, setclickedEvent }) {
   const currCapacity = Object.keys(event.people).length;
   // [joined, setJoined] = useState(false); // handle can't-join-twice later
   return (
@@ -19,7 +23,7 @@ export default function Event({ event, clickedEvent, setclickedEvent }) {
       <CardHeader
         title={event.name}
         subheader={event.date}
-        subheader={`Hosted by ${event.people[0]}`}
+        subheader={`Hosted by ${getUserFromUID(event.people[0], userList).displayName}`}
       ></CardHeader>
       {event.photoUrl && (
         <CardMedia

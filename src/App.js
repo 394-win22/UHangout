@@ -45,8 +45,6 @@ function App() {
 
   const [userList, userListLoading, userListError] = useData("/users", getUserList);
   const [user] = useUserState();
-  // console.log(user);
-
 
   useEffect(() => {
     console.log("userlist printed", userList); // make sure get users correctly
@@ -77,13 +75,13 @@ function App() {
       ?
         <Box>
           <SignOutButton/>
-          <EventList events={eventList} />
+          <EventList events={eventList} userList={userList} />
         </Box>
       : <SignInButton />}
       <br />
       <br />
       <br />
-      <BottomMenu />
+      <BottomMenu user={user}/>
     </div>
   );
 }
