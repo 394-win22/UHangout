@@ -9,8 +9,11 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DateTimePicker from "@mui/lab/DateTimePicker";
+import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
+import Alert from "@mui/material/Alert";
+
 import { pushData } from "../utilities/firebase";
+
 const useStyles = makeStyles({
   container: {
     position: "absolute",
@@ -44,10 +47,11 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
     name: "",
     people: ["host's name"],
     photoUrl: "",
-    eventTime: new Date(),
+    eventTime: null,
   };
 
   const [formValues, setFormValues] = useState(defaultValues);
+  const [dateEmptyError, setDateEmptyError] = useState(false);
 
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -58,9 +62,14 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
       [name]: value,
     });
   };
-  const handleSubmit = () => {
-    console.log("SUBMIT");
-    console.log(formValues);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formValues.eventTime === null) {
+      setDateEmptyError(true);
+      return;
+    }
+
     createEventInFirebase(formValues);
     setFormValues(defaultValues);
     //NEED TO RERENDER
@@ -76,7 +85,7 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
       sx={{ "& .MuiTextField-root": { m: 2, width: "25ch" } }}
     >
       <Box className={classes.container}>
-        <form onSubmit={handleSubmit} style={{textAlign:"center"}}>
+        <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
           <Typography
             variant="h5"
             component="h5"
@@ -110,19 +119,22 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
             label="Event Location"
           />
           <LocalizationProvider dateAdapter={DateAdapter}>
-            <DateTimePicker
-              required
+            <MobileDateTimePicker
               name="eventTime"
               renderInput={(props) => <TextField {...props} />}
-              label="Date & Time"
+              label="Date & Time *"
               value={formValues.eventTime}
               onChange={(newValue) => {
                 setFormValues({
                   ...formValues,
                   eventTime: newValue.toJSON(),
                 });
+                setDateEmptyError(false);
               }}
             />
+            {dateEmptyError && (
+              <Alert severity="error">Date and Time field is required.</Alert>
+            )}
           </LocalizationProvider>
           <TextField
             required
