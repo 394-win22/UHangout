@@ -1,11 +1,15 @@
 import "./App.css";
 import { useEffect } from "react";
 import EventList from "./components/EventList";
-import { useData, signInWithGoogle, useUserState, signOut, saveUserToDb} from "./utilities/firebase.js";
+import {
+  useData,
+  signInWithGoogle,
+  useUserState,
+  signOut,
+  saveUserToDb,
+} from "./utilities/firebase.js";
 import Box from "@mui/material/Box";
-
-
-
+import Button from "@mui/material/Button";
 import BottomMenu from "./components/BottomMenu";
 
 function getEventList(events) {
@@ -20,30 +24,30 @@ function getUserList(users) {
   });
 }
 
-
 const SignInButton = () => {
   return (
-  <button className="btn btn-secondary btn-sm"
-      onClick={ signInWithGoogle}>
-    Sign In
-  </button>
+    <Button variant="contained" onClick={signInWithGoogle}>
+      Sign In
+    </Button>
   );
 };
 
 const SignOutButton = () => (
-  <button className="btn btn-secondary btn-sm"
-      onClick={() => signOut()}>
+  <Button variant="contained" onClick={() => signOut()} sx={{ mb: 3 }}>
     Sign Out
-  </button>
+  </Button>
 );
 
-
-
 function App() {
-  const [eventList, eventListLoading, eventListError] = useData("/events", getEventList);
+  const [eventList, eventListLoading, eventListError] = useData(
+    "/events",
+    getEventList
+  );
 
-
-  const [userList, userListLoading, userListError] = useData("/users", getUserList);
+  const [userList, userListLoading, userListError] = useData(
+    "/users",
+    getUserList
+  );
   const [user] = useUserState();
 
   useEffect(() => {
@@ -54,9 +58,7 @@ function App() {
     if (!userList) return;
     if (!user) return;
 
-    const userCount = userList.filter((entry)=>
-      entry.uid === user.uid
-    ).length;
+    const userCount = userList.filter((entry) => entry.uid === user.uid).length;
 
     if (userCount === 0) {
       console.log("no user found in db");
@@ -64,24 +66,26 @@ function App() {
     }
   }, [userList, user]);
 
-
-  if (eventListError || userListError) return <h1>{eventListError + userListError}</h1>;
-  if (eventListLoading || userListLoading) return <h1>Loading the events...</h1>;
+  if (eventListError || userListError)
+    return <h1>{eventListError + userListError}</h1>;
+  if (eventListLoading || userListLoading)
+    return <h1>Loading the events...</h1>;
 
   return (
     <div className="App">
       <h1> UHangout</h1>
-      {(user)
-      ?
+      {user ? (
         <Box>
-          <SignOutButton/>
-          <EventList events={eventList} userList={userList} />
+          <SignOutButton />
+          <EventList events={eventList} userList={userList} user={user} />
         </Box>
-      : <SignInButton />}
+      ) : (
+        <SignInButton />
+      )}
       <br />
       <br />
       <br />
-      <BottomMenu user={user}/>
+      {user && <BottomMenu user={user} />}
     </div>
   );
 }

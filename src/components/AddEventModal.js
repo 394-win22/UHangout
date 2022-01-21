@@ -26,8 +26,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
-    padding: "20px 0 20px 0",
+    padding: "10px",
     borderRadius: "10px",
+    overflow: "auto",
   },
   title: {
     textAlign: "center",
@@ -45,7 +46,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     location: "",
     max: 2,
     name: "",
-    people: [user.uid],
+    people: user ? [user.uid] : "",
     photoUrl: "",
     eventTime: null,
   };
