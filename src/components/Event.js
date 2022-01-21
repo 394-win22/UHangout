@@ -7,25 +7,29 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { purple } from "@mui/material/colors";
-import { pushData } from "../utilities/firebase";
+import { JoinButton } from "./JoinButton";
 
-const getUserFromUID = (uid, userList) =>{
-  return userList.filter(user=>user.uid===uid)[0]
-}
+const getUserFromUID = (uid, userList) => {
+  return userList.filter((user) => user.uid === uid)[0];
+};
 
-export default function Event({ event, userList, clickedEvent, setclickedEvent }) {
+const isUIDinJoinedMembers = (uid, joinedMembers) => {
+  return joinedMembers.includes(uid);
+};
+
+export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
   // [joined, setJoined] = useState(false); // handle can't-join-twice later
   return (
-    <Card sx={{ maxWidth: 345, mb: 3 }}>
+    <Card sx={{ maxWidth: 345, mb: 5 }}>
       <CardHeader
         title={event.name}
         subheader={event.date}
-        subheader={`Hosted by ${getUserFromUID(event.people[0], userList).displayName}`}
+        subheader={`Hosted by ${
+          getUserFromUID(event.people[0], userList).displayName
+        }`}
       ></CardHeader>
-      {event.photoUrl && (
+      {
         <CardMedia
           component="img"
           height="140"
@@ -36,7 +40,7 @@ export default function Event({ event, userList, clickedEvent, setclickedEvent }
           }
           alt={event.name}
         />
-      )}
+      }
 
       <CardContent>
         <Typography gutterBottom variant="body" component="div">
@@ -50,53 +54,14 @@ export default function Event({ event, userList, clickedEvent, setclickedEvent }
         </Typography>
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
-        {currCapacity >= event.max ? (
+        {isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
+          <Button secondary> Already Joined! </Button>
+        ) : currCapacity >= event.max ? (
           <Button disabled> Event Full </Button>
         ) : (
-          <JoinButton
-            key={event}
-            event={event}
-            clickedEvent={clickedEvent}
-            setclickedEvent={setclickedEvent}
-            checked={event === clickedEvent}
-          />
+          <JoinButton key={event} event={event} userId={user.uid} />
         )}
       </CardActions>
     </Card>
   );
 }
-const theme = createTheme({
-  palette: {
-    primary: {
-      // Purple and green play nicely together.
-      main: purple[500],
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: "#11cb5f",
-    },
-  },
-});
-
-// );
-
-const JoinButton = ({ event, clickedEvent, setclickedEvent, checked }) => {
-  function updatePeopleData(event) {
-    pushData("events/" + event.id + "/people", "newPerson");
-  }
-
-  return (
-    <>
-      <ThemeProvider theme={theme}>
-        <Button
-          onClick={() => updatePeopleData(event)}
-          variant="contained"
-          color="secondary"
-          htmlFor={clickedEvent}
-        >
-          Join Event
-        </Button>
-      </ThemeProvider>
-    </>
-  );
-};
