@@ -10,6 +10,8 @@ import SendIcon from "@mui/icons-material/Send";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
+import Alert from '@mui/material/Alert';
+
 import { pushData } from "../utilities/firebase";
 
 const useStyles = makeStyles({
@@ -49,6 +51,9 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
   };
 
   const [formValues, setFormValues] = useState(defaultValues);
+  const [dateEmptyError, setDateEmptyError] = useState(false);
+
+
 
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -59,9 +64,13 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
       [name]: value,
     });
   };
-  const handleSubmit = () => {
-    console.log("SUBMIT");
-    console.log(formValues);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formValues.eventTime === null) {
+      setDateEmptyError(true);
+      return
+    }
     createEventInFirebase(formValues);
     setFormValues(defaultValues);
     //NEED TO RERENDER
@@ -112,7 +121,6 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
           />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
-              required
               name="eventTime"
               renderInput={(props) => <TextField {...props} />}
               label="Date & Time"
@@ -124,6 +132,7 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
                 });
               }}
             />
+            {(dateEmptyError) && <Alert severity="error">This is an error alert — check it out!</Alert>}
           </LocalizationProvider>
           <TextField
             required
