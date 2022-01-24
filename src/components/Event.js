@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
 import { JoinButton } from "./JoinButton";
+import { LeaveButton } from "./LeaveButton";
 
 const getUserFromUID = (uid, userList) => {
   return userList.filter((user) => user.uid === uid)[0];
@@ -16,6 +17,8 @@ const getUserFromUID = (uid, userList) => {
 const isUIDinJoinedMembers = (uid, joinedMembers) => {
   return joinedMembers.includes(uid);
 };
+
+
 
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
@@ -55,7 +58,7 @@ export default function Event({ event, userList, user }) {
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
         {isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
-          <Button secondary> Already Joined! </Button>
+          <LeaveButton key={event} event={event} userId={user.uid} />
         ) : currCapacity >= event.max ? (
           <Button disabled> Event Full </Button>
         ) : (
