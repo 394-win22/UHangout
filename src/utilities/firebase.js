@@ -2,6 +2,11 @@ import { initializeApp } from "firebase/app";
 import { useState, useEffect } from "react";
 import { getDatabase, onValue, ref, set, push } from "firebase/database";
 import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut, useAuthState} from 'firebase/auth';
+import 'firebase/storage';
+import { getStorage } from "firebase/storage";
+
+
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7mpjxeDj2hYyFJ4JkXhctKL2lzjRb5tM",
@@ -12,6 +17,8 @@ const firebaseConfig = {
   messagingSenderId: "435606287641",
   appId: "1:435606287641:web:56be8346407796c3470188",
 };
+
+export const storage = firebase.storage;
 
 export const firebase = initializeApp(firebaseConfig);
 export const database = getDatabase(firebase);
@@ -92,6 +99,36 @@ export const saveUserToDb = (userObject) => {
     displayName: userObject.displayName,
     email: userObject.email,
     photoURL: userObject.photoURL
+  });
+
+}
+
+export const handlePostPhoto = async (evt) => {
+  if (!evt.target.files || evt.target.files.length === 0) return;
+  const file = evt.target.files[0];
+
+  // Points to the root reference
+  const storageRef = ref(storage);
+
+  // store photo on Google Storage
+  // this puts everything in one folder called photos
+  // you probably want to have subfolders
+  const photoRef = storageRef('photos').child(file.name);
+  await photoRef.put(file, {
+    contentType: file.type
+  });
+
+  const url = await photoRef.getDownloadURL();
+
+  // store photo data on Firebase Realtime database
+  const photoItemsRef = ref(database + '/photos/');
+  const { uid, email = 'n/a' } = user;
+
+  await photoItemsRef.push({ 
+    url, 
+    uid,
+    email, 
+    createdAt: database.ServerValue.TIMESTAMP
   });
 
 }

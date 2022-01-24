@@ -12,7 +12,9 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
 
-import { pushData } from "../utilities/firebase";
+
+import { pushData, handlePostPhoto } from "../utilities/firebase";
+
 
 const useStyles = makeStyles({
   container: {
@@ -146,12 +148,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             type="number"
             InputLabelProps={{ shrink: true }}
           />{" "}
-          <TextField
-            name="photoUrl"
-            value={formValues.photoUrl}
-            onChange={handleInputChange}
-            label="Custom Image Link"
-            InputLabelProps={{ shrink: true }}
+          <input type="file" accept="image/*" capture="environment" className="form-control"
+            onChange= {handlePostPhoto()}
           />
           <TextField
             required
