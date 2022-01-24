@@ -93,4 +93,5 @@ export const saveUserToDb = (userObject) => {
     email: userObject.email,
     photoURL: userObject.photoURL
   });
+
 }

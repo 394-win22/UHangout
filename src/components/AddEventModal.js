@@ -26,8 +26,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
-    padding: "20px 0 20px 0",
+    padding: "10px",
     borderRadius: "10px",
+    overflow: "auto",
   },
   title: {
     textAlign: "center",
@@ -37,7 +38,7 @@ function createEventInFirebase(event) {
   pushData("/events", event);
 }
 
-const AddEventModal = ({ open, handleOpen, handleClose }) => {
+const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const classes = useStyles();
   const defaultValues = {
     description: "",
@@ -45,7 +46,7 @@ const AddEventModal = ({ open, handleOpen, handleClose }) => {
     location: "",
     max: 2,
     name: "",
-    people: ["host's name"],
+    people: user ? [user.uid] : "",
     photoUrl: "",
     eventTime: null,
   };

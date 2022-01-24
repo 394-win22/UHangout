@@ -1,0 +1,52 @@
+{
+  "eventid1" : {
+    "description" : "Looking for 5 people to join me for sailing",
+    "duration" : 2,
+    "eventTime" : "2022-01-25T16:00:00.000Z",
+    "location" : "South Beach",
+    "max" : 6,
+    "name" : "Sailing at South Beach",
+    "people" : [ "host's name", "firstName2 lastName2" ],
+    "photoUrl" : "https://nurecreation.com/images/2015/8/16//SailingCenter.jpg?width=600&height=360&mode=crop"
+  },
+  "eventid2" : {
+    "description" : "Looking for 3 people to join my bowling league!",
+    "duration" : 2,
+    "eventTime" : "2022-01-25T02:00:00.000Z",
+    "location" : "Chicago Bowling Alley + Bar",
+    "max" : 4,
+    "name" : "Join my Bowling League",
+    "people" : {
+      "0" : "host's name",
+      "-MtyJJoUwiwJbyPYRgxt" : "newPerson",
+      "-MtyJJttfw8PsKP6gnO4" : "newPerson",
+      "-MtyJK-gM7MGA6h4gBJV" : "newPerson"
+    },
+    "photoUrl" : "https://cdn.choosechicago.com/uploads/2016/03/blur-bowling-bowling-alley-344034.jpg"
+  },
+  "eventid3" : {
+    "description" : "Who wants to join my friend and I in doubles tennis?",
+    "duration" : 2,
+    "eventTime" : "2022-01-25T20:00:00.000Z",
+    "location" : "Henry Crown Sports Pavillion",
+    "max" : 4,
+    "name" : "Doubles Tennis",
+    "people" : {
+      "0" : "host's name",
+      "1" : "firstName2 lastName2",
+      "-MtyJJE9bUTlJn-8vGFR" : "newPerson",
+      "-MtyJJN6mMvaV7rcJAE0" : "newPerson"
+    },
+    "photoUrl" : "https://images.mktw.net/im-359917?width=1280&size=1.77777778"
+  },
+  "eventid4" : {
+    "description" : "SKY-DIVING!!!",
+    "duration" : 6,
+    "eventTime" : "2022-01-26T15:00:00.000Z",
+    "location" : "Skydive Chicago",
+    "max" : 5,
+    "name" : "SKYDIVING!!!!!!",
+    "people" : [ "host's name" ],
+    "photoUrl" : "https://media.trytn.website/skydivewindycitychicago/sites/13/2020/03/Skydive-Windy-City-Chicago-Chicago-Skydiving-Photo-Gallery-7.jpg"
+  }
+}

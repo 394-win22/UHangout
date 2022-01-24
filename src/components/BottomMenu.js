@@ -7,7 +7,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import AddIcon from "@mui/icons-material/Add";
 import ForumIcon from "@mui/icons-material/Forum";
 
-const BottomMenu = () => {
+const BottomMenu = ({user}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -25,11 +25,12 @@ const BottomMenu = () => {
             onClick={handleOpen}
           />
           <AddEventModal
+            user={user}
             open={open}
             setOpen={setOpen}
             handleClose={handleClose}
           />
-          <BottomNavigationAction label="Messages" icon={<ForumIcon />} />
+          {/* <BottomNavigationAction label="Messages" icon={<ForumIcon />} /> */}
         </BottomNavigation>
       </div>
     </Paper>
