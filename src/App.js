@@ -7,15 +7,22 @@ import {
   useUserState,
   signOut,
   saveUserToDb,
+  useEvents
 } from "./utilities/firebase.js";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import BottomMenu from "./components/BottomMenu";
 
 function getEventList(events) {
-  return Object.entries(events).map(([eventId, eventObj]) => {
+  var listOfEvent =  Object.entries(events).map(([eventId, eventObj]) => {
     return { ...eventObj, id: eventId };
   });
+  console.log("Need to sort the event");
+  listOfEvent = listOfEvent.sort((item1, item2) => {
+    return (item1.eventTime - item2.eventTime)
+  })
+  console.log(listOfEvent);
+  return listOfEvent;
 }
 
 function getUserList(users) {
@@ -39,7 +46,7 @@ const SignOutButton = () => (
 );
 
 function App() {
-  const [eventList, eventListLoading, eventListError] = useData(
+  var [eventList, eventListLoading, eventListError] = useEvents(
     "/events",
     getEventList
   );
@@ -50,8 +57,8 @@ function App() {
   );
   const [user] = useUserState();
 
+
   useEffect(() => {
-    console.log("userlist printed", userList); // make sure get users correctly
   }, [userList]);
 
   useEffect(() => {
@@ -61,14 +68,13 @@ function App() {
     const userCount = userList.filter((entry) => entry.uid === user.uid).length;
 
     if (userCount === 0) {
-      console.log("no user found in db");
       saveUserToDb(user);
     }
   }, [userList, user]);
 
-  if (eventListError || userListError)
-    return <h1>{eventListError + userListError}</h1>;
-  if (eventListLoading || userListLoading)
+  if ( userListError || eventListError)
+    return <h1>{userListError}</h1>;
+  if (userListLoading || eventListLoading)
     return <h1>Loading the events...</h1>;
 
   return (

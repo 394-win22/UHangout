@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { useState, useEffect } from "react";
-import { getDatabase, onValue, ref, set, push } from "firebase/database";
+import { getDatabase, onValue, ref, set, push, query, orderByChild, startAt} from "firebase/database";
 import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut, useAuthState} from 'firebase/auth';
 
 const firebaseConfig = {
@@ -58,12 +58,36 @@ export const useData = (path, transform) => {
     return onValue(
       dbRef,
       (snapshot) => {
-        console.log("snapshot");
-        console.log(snapshot.val());
         const val = snapshot.val();
         if (devMode) {
-          console.log(val);
         }
+        setData(transform ? transform(val) : val);
+        setLoading(false);
+        setError(null);
+      },
+      (error) => {
+        setData(null);
+        setLoading(false);
+        setError(error);
+      }
+    );
+  }, [path, transform]);
+
+  return [data, loading, error];
+};
+
+export const useEvents = (path, transform) => {
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    const orderByRef = query(ref(database, "/events"), orderByChild('eventTime'));
+    const startAtRef = query(orderByRef, startAt(Date.now()));
+    return onValue(
+      startAtRef,
+      (snapshot) => {
+        const val = snapshot.val();
         setData(transform ? transform(val) : val);
         setLoading(false);
         setError(null);
@@ -93,5 +117,4 @@ export const saveUserToDb = (userObject) => {
     email: userObject.email,
     photoURL: userObject.photoURL
   });
-
 }
