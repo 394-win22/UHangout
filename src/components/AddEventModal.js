@@ -134,8 +134,9 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
               onChange={(newValue) => {
                 setFormValues({
                   ...formValues,
-                  eventTime: newValue.toJSON(),
-                });
+                  eventTime: newValue.valueOf(),
+                },
+                );
                 setDateEmptyError(false);
               }}
             />
