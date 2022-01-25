@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { purple } from "@mui/material/colors";
-import { pushData } from "../utilities/firebase";
+import { setData } from "../utilities/firebase";
 import Button from "@mui/material/Button";
 
 const theme = createTheme({
@@ -16,10 +16,20 @@ const theme = createTheme({
   },
 });
 
-export const LeaveButton = ({ event, userId }) => {
+export const LeaveButton = ({ event, userId, setJoined }) => {
   function updatePeopleData(event, userId) {
-    console.log(userId);
-    pushData("events/" + event.id + "/people", userId);
+    // remove user from the array of users
+    let newUserArray = Object.values(event.people).filter((user) => {
+      console.log("user in LeaveButton filter:", user);
+      console.log("userId in LeaveButton filter:", userId);
+      return user != userId
+    });
+    console.log("newUserArray", newUserArray);
+    console.log(event);
+    console.log(event.people);
+    console.log("leaving event, filtered array: ", userId);
+    setData("events/" + event.id + "/people", newUserArray);
+    setJoined(false);
   }
 
   return (
@@ -28,9 +38,9 @@ export const LeaveButton = ({ event, userId }) => {
         <Button
           onClick={() => updatePeopleData(event, userId)}
           variant="contained"
-          color="secondary"
+          color="primary"
         >
-          Join Event
+          Leave Event
         </Button>
       </ThemeProvider>
     </>
