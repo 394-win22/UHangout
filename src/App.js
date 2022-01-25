@@ -14,9 +14,15 @@ import Button from "@mui/material/Button";
 import BottomMenu from "./components/BottomMenu";
 
 function getEventList(events) {
-  return Object.entries(events).map(([eventId, eventObj]) => {
+  var listOfEvent =  Object.entries(events).map(([eventId, eventObj]) => {
     return { ...eventObj, id: eventId };
   });
+  console.log("Need to sort the event");
+  listOfEvent = listOfEvent.sort((item1, item2) => {
+    return (item1.eventTime - item2.eventTime)
+  })
+  console.log(listOfEvent);
+  return listOfEvent;
 }
 
 function getUserList(users) {
@@ -53,7 +59,6 @@ function App() {
 
 
   useEffect(() => {
-    // console.log("userlist printed", userList); // make sure get users correctly
   }, [userList]);
 
   useEffect(() => {
@@ -63,7 +68,6 @@ function App() {
     const userCount = userList.filter((entry) => entry.uid === user.uid).length;
 
     if (userCount === 0) {
-      console.log("no user found in db");
       saveUserToDb(user);
     }
   }, [userList, user]);

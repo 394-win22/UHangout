@@ -60,7 +60,6 @@ export const useData = (path, transform) => {
       (snapshot) => {
         const val = snapshot.val();
         if (devMode) {
-          // console.log(val);
         }
         setData(transform ? transform(val) : val);
         setLoading(false);
@@ -89,8 +88,6 @@ export const useEvents = (path, transform) => {
       startAtRef,
       (snapshot) => {
         const val = snapshot.val();
-        console.log(val)
-
         setData(transform ? transform(val) : val);
         setLoading(false);
         setError(null);
@@ -105,11 +102,6 @@ export const useEvents = (path, transform) => {
 
   return [data, loading, error];
 };
-
-
-
-
-
 
 export const setData = (path, value) => set(ref(database, path), value);
 
