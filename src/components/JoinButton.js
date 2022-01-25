@@ -18,7 +18,7 @@ const theme = createTheme({
 
 export const JoinButton = ({ event, userId }) => {
   function updatePeopleData(event, userId) {
-    console.log(userId);
+    // console.log(userId);
     pushData("events/" + event.id + "/people", userId);
   }
 

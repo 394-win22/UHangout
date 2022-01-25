@@ -10,7 +10,12 @@ import {
   useAuthState,
 } from "firebase/auth";
 import "firebase/storage";
-import { getStorage } from "firebase/storage";
+import {
+  getStorage,
+  ref as sRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7mpjxeDj2hYyFJ4JkXhctKL2lzjRb5tM",
@@ -66,11 +71,8 @@ export const useData = (path, transform) => {
     return onValue(
       dbRef,
       (snapshot) => {
-        console.log("snapshot");
-        console.log(snapshot.val());
         const val = snapshot.val();
         if (devMode) {
-          console.log(val);
         }
         setData(transform ? transform(val) : val);
         setLoading(false);
@@ -103,33 +105,16 @@ export const saveUserToDb = (userObject) => {
   });
 };
 
-export const handlePostPhoto = async (evt) => {
-  console.log("POSTING IMAGE");
-  console.log(evt);
-  if (!evt.target.files || evt.target.files.length === 0) return;
-  const file = evt.target.files[0];
-
-  const storageRef = ref(storage + "/photos");
-
-  const databaseRef = ref(database);
-  // store photo on Google Storage
-  // this puts everything in one folder called photos
-  // you probably want to have subfolders
-  const photoRef = storageRef("photos").child(file.name);
-  await photoRef.put(file, {
-    contentType: file.type,
+export const handlePostPhoto = (image) => {
+  const storageRef = sRef(storage, "images/" + image.name);
+  // console.log(image);
+  uploadBytes(storageRef, image).then((snapshot) => {
+    // console.log("Uploaded an image!");
   });
+};
 
-  const url = await photoRef.getDownloadURL();
-
-  // store photo data on Firebase Realtime database
-  const photoItemsRef = databaseRef("photos");
-  // const { uid, email = "n/a" } = user;
-
-  await photoItemsRef.push({
-    url,
-    // uid,
-    // email,
-    createdAt: database.ServerValue.TIMESTAMP,
-  });
+//GET THIS TO RETURN THE URL OF THE IMAGE???
+export const getImageFromStorage = (imageName) => {
+  console.log(imageName);
+  getDownloadURL(sRef(storage, "images/" + imageName)).then((url) => url);
 };
