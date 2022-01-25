@@ -7,6 +7,7 @@ import {
   useUserState,
   signOut,
   saveUserToDb,
+  useEvents
 } from "./utilities/firebase.js";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -39,7 +40,7 @@ const SignOutButton = () => (
 );
 
 function App() {
-  const [eventList, eventListLoading, eventListError] = useData(
+  var [eventList, eventListLoading, eventListError] = useEvents(
     "/events",
     getEventList
   );
@@ -50,8 +51,9 @@ function App() {
   );
   const [user] = useUserState();
 
+
   useEffect(() => {
-    console.log("userlist printed", userList); // make sure get users correctly
+    // console.log("userlist printed", userList); // make sure get users correctly
   }, [userList]);
 
   useEffect(() => {
@@ -66,9 +68,9 @@ function App() {
     }
   }, [userList, user]);
 
-  if (eventListError || userListError)
-    return <h1>{eventListError + userListError}</h1>;
-  if (eventListLoading || userListLoading)
+  if ( userListError || eventListError)
+    return <h1>{userListError}</h1>;
+  if (userListLoading || eventListLoading)
     return <h1>Loading the events...</h1>;
 
   return (
