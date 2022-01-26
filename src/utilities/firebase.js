@@ -1,14 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { useState, useEffect } from "react";
-import { getDatabase, onValue, ref, set, push } from "firebase/database";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  onIdTokenChanged,
-  signInWithPopup,
-  signOut,
-  useAuthState,
-} from "firebase/auth";
 import "firebase/storage";
 import {
   getStorage,
