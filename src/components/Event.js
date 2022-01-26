@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import moment from "moment";
 import { JoinButton } from "./JoinButton";
 import { getImageFromStorage } from "../utilities/firebase";
-=======
 import { LeaveButton } from "./LeaveButton";
 import { useState } from "react";
 const getUserFromUID = (uid, userList) => {

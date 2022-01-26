@@ -14,7 +14,7 @@ const JoinedEvents = ({ events, userList, user }) => {
         user==currentUser &&
         <Event
           key={event.id}
-          event={event}
+          event= {event}
           userList={userList}
           user={user}
         ></Event>
