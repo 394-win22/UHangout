@@ -16,10 +16,11 @@ const theme = createTheme({
   },
 });
 
-export const JoinButton = ({ event, userId }) => {
+export const JoinButton = ({ event, userId, setJoined }) => {
   function updatePeopleData(event, userId) {
     // console.log(userId);
     pushData("events/" + event.id + "/people", userId);
+    setJoined(true);
   }
 
   return (

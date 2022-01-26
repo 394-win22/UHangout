@@ -9,6 +9,9 @@ import Typography from "@mui/material/Typography";
 import moment from "moment";
 import { JoinButton } from "./JoinButton";
 import { getImageFromStorage } from "../utilities/firebase";
+=======
+import { LeaveButton } from "./LeaveButton";
+import { useState } from "react";
 const getUserFromUID = (uid, userList) => {
   return userList.filter((user) => user.uid === uid)[0];
 };
@@ -17,10 +20,12 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
   return joinedMembers.includes(uid);
 };
 
+
+
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
-  // [joined, setJoined] = useState(false); // handle can't-join-twice later
-  console.log(getImageFromStorage(event.photoUrl));
+  let [joined, setJoined] = useState(false); // handle can't-join-twice later
+  console.log("event var in Event component:", event);
 
   return (
     <Card sx={{ maxWidth: 345, mb: 5 }}>
@@ -45,11 +50,11 @@ export default function Event({ event, userList, user }) {
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
         {isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
-          <Button secondary> Already Joined! </Button>
+          <LeaveButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
         ) : currCapacity >= event.max ? (
           <Button disabled> Event Full </Button>
         ) : (
-          <JoinButton key={event} event={event} userId={user.uid} />
+          <JoinButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
         )}
       </CardActions>
     </Card>

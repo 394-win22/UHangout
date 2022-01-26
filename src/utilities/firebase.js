@@ -16,6 +16,8 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
+import { getDatabase, onValue, ref, set, push, query, orderByChild, startAt} from "firebase/database";
+import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut, useAuthState} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7mpjxeDj2hYyFJ4JkXhctKL2lzjRb5tM",
@@ -74,6 +76,33 @@ export const useData = (path, transform) => {
         const val = snapshot.val();
         if (devMode) {
         }
+        setData(transform ? transform(val) : val);
+        setLoading(false);
+        setError(null);
+      },
+      (error) => {
+        setData(null);
+        setLoading(false);
+        setError(error);
+      }
+    );
+  }, [path, transform]);
+
+  return [data, loading, error];
+};
+
+export const useEvents = (path, transform) => {
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    const orderByRef = query(ref(database, "/events"), orderByChild('eventTime'));
+    const startAtRef = query(orderByRef, startAt(Date.now()));
+    return onValue(
+      startAtRef,
+      (snapshot) => {
+        const val = snapshot.val();
         setData(transform ? transform(val) : val);
         setLoading(false);
         setError(null);
