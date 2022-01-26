@@ -12,7 +12,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
 
-import { pushData } from "../utilities/firebase";
+import { pushData, handlePostPhoto } from "../utilities/firebase";
 
 const useStyles = makeStyles({
   container: {
@@ -58,6 +58,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   };
 
   const [formValues, setFormValues] = useState(defaultValues);
+  const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
 
   const handleInputChange = (e) => {
@@ -72,6 +73,9 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    handlePostPhoto(image);
+
     if (formValues.eventTime === null) {
       setDateEmptyError(true);
       return;
@@ -83,6 +87,25 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     handleClose();
   };
 
+  const onImageChange = (e) => {
+    const reader = new FileReader();
+    let file = e.target.files[0];
+    if (file) {
+      setFormValues({
+        ...formValues,
+        photoUrl: file.name,
+      });
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImage(file);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+      // if there is no file, set image back to null
+    } else {
+      setImage(null);
+    }
+  };
   return (
     <Modal
       open={open}
@@ -153,12 +176,12 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             type="number"
             InputLabelProps={{ shrink: true }}
           />{" "}
-          <TextField
-            name="photoUrl"
-            value={formValues.photoUrl}
-            onChange={handleInputChange}
-            label="Custom Image Link"
-            InputLabelProps={{ shrink: true }}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              onImageChange(e);
+            }}
           />
           <TextField
             required

@@ -1,5 +1,21 @@
 import { initializeApp } from "firebase/app";
 import { useState, useEffect } from "react";
+import { getDatabase, onValue, ref, set, push } from "firebase/database";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onIdTokenChanged,
+  signInWithPopup,
+  signOut,
+  useAuthState,
+} from "firebase/auth";
+import "firebase/storage";
+import {
+  getStorage,
+  ref as sRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { getDatabase, onValue, ref, set, push, query, orderByChild, startAt} from "firebase/database";
 import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut, useAuthState} from 'firebase/auth';
 
@@ -15,14 +31,13 @@ const firebaseConfig = {
 
 export const firebase = initializeApp(firebaseConfig);
 export const database = getDatabase(firebase);
-
-
+const storage = getStorage();
 
 /* authentication functions */
 export const signInWithGoogle = () => {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
-    prompt: 'select_account'
+    prompt: "select_account",
   });
 
   signInWithPopup(getAuth(firebase), provider);
@@ -115,6 +130,20 @@ export const saveUserToDb = (userObject) => {
   setData("/users/" + userObject.uid, {
     displayName: userObject.displayName,
     email: userObject.email,
-    photoURL: userObject.photoURL
+    photoURL: userObject.photoURL,
   });
-}
+};
+
+export const handlePostPhoto = (image) => {
+  const storageRef = sRef(storage, "images/" + image.name);
+  // console.log(image);
+  uploadBytes(storageRef, image).then((snapshot) => {
+    // console.log("Uploaded an image!");
+  });
+};
+
+//GET THIS TO RETURN THE URL OF THE IMAGE???
+export const getImageFromStorage = (imageName) => {
+  console.log(imageName);
+  getDownloadURL(sRef(storage, "images/" + imageName)).then((url) => url);
+};
