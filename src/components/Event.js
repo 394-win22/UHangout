@@ -48,6 +48,7 @@ export default function Event({ event, userList, user }) {
         </Typography>
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
+          <deleteButton key ={event} event ={event} userId={user.id}></deleteButton>
         {isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
           <LeaveButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
         ) : currCapacity >= event.max ? (
