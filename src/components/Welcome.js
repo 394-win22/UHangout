@@ -32,7 +32,7 @@ export const Welcome = ({ user, events, userList }) => {
       <br />
       <br />
       <br />
-      {user && <BottomMenu user={user} />}
+      {/* {user && <BottomMenu user={user} />} */}
     </div>
   );
 };

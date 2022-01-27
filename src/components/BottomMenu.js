@@ -6,11 +6,15 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import AddIcon from "@mui/icons-material/Add";
 import ForumIcon from "@mui/icons-material/Forum";
+import EventSeatIcon from '@mui/icons-material/EventSeat';
+// import {useNavigate, withRouter} from 'react-router-dom';
+
 
 const BottomMenu = ({user}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
 
   return (
     <Paper
@@ -31,6 +35,13 @@ const BottomMenu = ({user}) => {
             handleClose={handleClose}
           />
           {/* <BottomNavigationAction label="Messages" icon={<ForumIcon />} /> */}
+          {/* <Link to="/joined"> */}
+            <BottomNavigationAction
+              label="My Events"
+              icon={<EventSeatIcon />}
+            />
+          {/* </Link> */}
+
         </BottomNavigation>
       </div>
     </Paper>

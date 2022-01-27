@@ -13,6 +13,7 @@ import {
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import JoinedEvents from "./components/JoinedEvents";
 import Messages from "./components/Messages";
+import BottomMenu from "./components/BottomMenu";
 
 function getEventList(events) {
   var listOfEvent = Object.entries(events).map(([eventId, eventObj]) => {
@@ -65,7 +66,8 @@ function App() {
     return <h1>Loading the events...</h1>;
 
   return (
-    <BrowserRouter>
+    <>
+      <BrowserRouter>
       <Routes>
         <Route
           path="/"
@@ -85,6 +87,9 @@ function App() {
         <Route path="/messages" element={<Messages />} />
       </Routes>
     </BrowserRouter>
+    {user && <BottomMenu user={user} />}
+    </>
+    
   );
 }
 
