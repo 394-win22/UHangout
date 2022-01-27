@@ -24,7 +24,7 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
   let [joined, setJoined] = useState(false); // handle can't-join-twice later
-  console.log("event var in Event component:", event);
+  // console.log("event var in Event component:", event);
 
   return (
     <Card sx={{ maxWidth: 345, mb: 5 }}>

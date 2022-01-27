@@ -3,19 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import JoinedEvents from './components/JoinedEvents';
-import Messages from './components/Messages';
+// import { BrowserRouter, Route, Routes } from 'react-router-dom';
+// import JoinedEvents from './components/JoinedEvents';
+// import Messages from './components/Messages';
+
 
 
 ReactDOM.render(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/joined" element={<JoinedEvents />} />
-        <Route path="/messages" element={<Messages />} />
-    </Routes>
-    </BrowserRouter>,
+    <App />,
   document.getElementById('root')
 );
 
