@@ -35,7 +35,7 @@ export default function Event({ event, userList, user }) {
           getUserFromUID(event.people[0], userList).displayName
         }`}
       ></CardHeader>
-      <CardMedia component="img" height="140" image="filler" alt={event.name} />
+      <CardMedia component="img" imageURL={event.photoURL} height="140" image="filler" alt={event.name} />
       <CardContent>
         <Typography gutterBottom variant="body" component="div">
           Time: {moment(event.eventTime).format("MMMM Do YYYY, h:mm a")}
