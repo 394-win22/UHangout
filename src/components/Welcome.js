@@ -2,25 +2,33 @@ import EventList from "./EventList";
 import Box from "@mui/material/Box";
 import BottomMenu from "./BottomMenu";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+
 import { signInWithGoogle, signOut } from "../utilities/firebase";
 const SignInButton = () => {
   return (
-    <Button variant="contained" onClick={signInWithGoogle}>
-      Sign In
-    </Button>
+    <Box textAlign="center">
+      <Button variant="contained" onClick={signInWithGoogle}>
+        Sign In
+      </Button>
+    </Box>
   );
 };
 
 const SignOutButton = () => (
-  <Button variant="contained" onClick={() => signOut()} sx={{ mb: 3 }}>
-    Sign Out
-  </Button>
+  <Box textAlign="center">
+    <Button variant="contained" onClick={() => signOut()} sx={{ mb: 3 }}>
+      Sign Out
+    </Button>
+  </Box>
 );
 
 export const Welcome = ({ user, events, userList }) => {
   return (
     <div className="App">
-      <h1> UHangout</h1>
+      <Typography variant="h4" align="center" sx={{ padding: 3 }}>
+        UHangout
+      </Typography>
       {user ? (
         <Box>
           <SignOutButton />
@@ -32,7 +40,6 @@ export const Welcome = ({ user, events, userList }) => {
       <br />
       <br />
       <br />
-      {/* {user && <BottomMenu user={user} />} */}
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import "./App.css";
 import { useEffect } from "react";
 import { Welcome } from "./components/Welcome";
 import {
@@ -9,6 +8,7 @@ import {
   saveUserToDb,
   useEvents,
 } from "./utilities/firebase.js";
+import Typography from "@mui/material/Typography";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import JoinedEvents from "./components/JoinedEvents";
@@ -67,29 +67,33 @@ function App() {
 
   return (
     <>
+      {" "}
       <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Welcome user={user} events={eventList} userList={userList} />
-          }
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Welcome user={user} events={eventList} userList={userList} />
+            }
+          />
 
-        {/* <Route path="/events" element={<EventList/>} /> */}
-        <Route
-          path="/joined"
-          element={
-            <JoinedEvents events={eventList} userList={userList} user={user} />
-          }
-        />
+          {/* <Route path="/events" element={<EventList/>} /> */}
+          <Route
+            path="/joined"
+            element={
+              <JoinedEvents
+                events={eventList}
+                userList={userList}
+                user={user}
+              />
+            }
+          />
 
-        <Route path="/messages" element={<Messages />} />
-      </Routes>
-    </BrowserRouter>
-    {user && <BottomMenu user={user} />}
+          <Route path="/messages" element={<Messages />} />
+        </Routes>
+        {user && <BottomMenu user={user} />}
+      </BrowserRouter>
     </>
-    
   );
 }
 

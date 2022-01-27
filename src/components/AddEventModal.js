@@ -30,15 +30,15 @@ const useStyles = makeStyles({
     borderRadius: "10px",
     overflow: "auto",
     height: "80%",
-    overflowY: "scroll"
+    overflowY: "scroll",
   },
   title: {
     textAlign: "center",
   },
   form: {
     height: "100%",
-    overflowY: "scroll"
-  }
+    overflowY: "scroll",
+  },
 });
 function createEventInFirebase(event) {
   pushData("/events", event);
@@ -115,7 +115,11 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
       sx={{ "& .MuiTextField-root": { m: 2, width: "25ch" } }}
     >
       <Box className={classes.container}>
-        <form onSubmit={handleSubmit} style={{ textAlign: "center" }} className={classes.form}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ textAlign: "center" }}
+          className={classes.form}
+        >
           <Typography
             variant="h5"
             component="h5"
@@ -158,8 +162,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
                 setFormValues({
                   ...formValues,
                   eventTime: newValue.valueOf(),
-                },
-                );
+                });
                 setDateEmptyError(false);
               }}
             />
