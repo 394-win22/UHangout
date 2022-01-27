@@ -7,21 +7,23 @@ import { useUserState } from "../utilities/firebase";
 
 
 const JoinedEvents = ({ events, userList, user }) => {
-  const [currentUser] = useUserState();
+  // console.log(user.u
   return (
     <Box sx={{ mx: "auto", width: 300 }}>
-      {events.map((event) => (
-        user==currentUser &&
+      {events.map((event) => {
+        console.log(event.people)
+        return (
+        event.people.includes(user.uid)&&
         <Event
           key={event.id}
           event= {event}
           userList={userList}
           user={user}
         ></Event>
-      ))}
+      )}
+      )}
     </Box>
   );
 };
 
 export default JoinedEvents;
-
