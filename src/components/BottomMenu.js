@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import Event from "./Event";
+import { useState } from "react";
 import AddEventModal from "./AddEventModal";
 import Paper from "@mui/material/Paper";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import AddIcon from "@mui/icons-material/Add";
-import ForumIcon from "@mui/icons-material/Forum";
 
 const BottomMenu = ({user}) => {
   const [open, setOpen] = useState(false);

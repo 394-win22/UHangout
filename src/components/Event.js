@@ -11,6 +11,11 @@ import { JoinButton } from "./JoinButton";
 import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
 import { useState } from "react";
+import CancelIcon from '@mui/icons-material/Cancel';
+import IconButton from '@mui/material/IconButton';
+
+
+
 const getUserFromUID = (uid, userList) => {
   return userList.filter((user) => user.uid === uid)[0];
 };
@@ -28,6 +33,9 @@ export default function Event({ event, userList, user }) {
 
   return (
     <Card sx={{ maxWidth: 345, mb: 5 }}>
+      <IconButton color={"warning"} sx={{ float:"right" }}>
+        <CancelIcon />
+      </IconButton>
       <CardHeader
         title={event.name}
         subheader={event.date}
@@ -48,7 +56,6 @@ export default function Event({ event, userList, user }) {
         </Typography>
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
-          <deleteButton key ={event} event ={event} userId={user.id}></deleteButton>
         {isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
           <LeaveButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
         ) : currCapacity >= event.max ? (
