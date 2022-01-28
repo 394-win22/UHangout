@@ -12,7 +12,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
 
-import { pushData, handlePostPhoto } from "../utilities/firebase";
+import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
 
 const useStyles = makeStyles({
   container: {
@@ -71,26 +71,32 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    handlePostPhoto(image);
-
     if (formValues.eventTime === null) {
       setDateEmptyError(true);
       return;
     }
 
+    const photoUrl = await uploadPhotoToStorage(image);
+    console.log(photoUrl);
+
+    formValues.photoUrl = photoUrl;
+
     createEventInFirebase(formValues);
     setFormValues(defaultValues);
+
+
     //NEED TO RERENDER
     handleClose();
   };
 
   const onImageChange = (e) => {
+    console.log("[onImageChange] run");
     const reader = new FileReader();
     let file = e.target.files[0];
     if (file) {
+      console.log(file);
       setFormValues({
         ...formValues,
         photoUrl: file.name,
