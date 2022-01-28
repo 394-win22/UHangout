@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SearchBar from "./SearchBar";
 import { useState } from 'react';
+import Grid from '@mui/material/Grid'
 
 import { signInWithGoogle, signOut } from "../utilities/firebase";
 const SignInButton = () => {
@@ -38,17 +39,36 @@ export const Welcome = ({ user, events, userList }) => {
 
   return (
     <div className="App">
-      <Typography variant="h4" align="center" sx={{ padding: 3 }}>
-        UHangout
-      </Typography>
       {user ? (
-        <Box>
-          <SignOutButton />
-          <SearchBar setQuery={setQuery}/>
-          <EventList events={filteredEvents} userList={userList} user={user} />
-        </Box>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems="center" justifyContent="center">
+          <Grid item xs={1}>
+            <Typography variant="h4" align="center" sx={{ padding: 3 }}>
+              UHangout
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <SignOutButton />
+          </Grid>
+          <Box width="100%"/>
+          <Grid item xs={1}>
+            <SearchBar setQuery={setQuery}/>
+          </Grid>
+          <Box width="100%"/>
+          <Grid item xs={1}>
+            <EventList events={filteredEvents} userList={userList} user={user} />
+          </Grid>
+        </Grid>
       ) : (
-        <SignInButton />
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems="center" justifyContent="center">
+            <Grid item xs={1}>
+            <Typography variant="h4" align="center" sx={{ padding: 3 }}>
+              UHangout
+            </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <SignInButton />
+            </Grid>
+          </Grid>
       )}{" "}
       <br />
       <br />
