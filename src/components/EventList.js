@@ -5,14 +5,16 @@ import Box from "@mui/material/Box";
 const EventList = ({ events, userList, user }) => {
   return (
     <Box sx={{ mx: "auto", width: 300 }}>
-      {events.map((event) => (
+      {events.map((event) => { 
+
+        return !Object.values(event.people).includes(user.uid) && (
         <Event
           key={event.id}
           event={event}
           userList={userList}
           user={user}
-        ></Event>
-      ))}
+        />
+      )})}
     </Box>
   );
 };
