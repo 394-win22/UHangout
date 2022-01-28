@@ -58,7 +58,7 @@ export default function Event({ event, userList, user }) {
         ) : currCapacity >= event.max ? (
           <Button disabled> Event Full </Button>
         ) : (
-          <JoinButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
+          <JoinButton key={event} event={event} userId={user.uid} setJoined={setJoined}/>
         )}
       </CardActions>
     </Card>
