@@ -68,7 +68,7 @@ export const LeaveButton = ({ event, userId, setJoined }) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {"Would you like to leave the event?"}
+            {"Would you like to leave this event?"}
           </DialogTitle>
           <DialogActions>
             <Button onClick={handleClose} color="error">Cancel</Button>
