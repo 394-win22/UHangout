@@ -10,7 +10,7 @@ import moment from "moment";
 import { JoinButton } from "./JoinButton";
 import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
-import { DeleteButton } from "./DeleteButton";
+import { DeleteButton } from "./deleteButton";
 import { useState } from "react";
 
 
