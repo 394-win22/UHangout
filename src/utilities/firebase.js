@@ -7,7 +7,7 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
-import { getDatabase, onValue, ref, set, push, query, orderByChild, startAt} from "firebase/database";
+import { getDatabase, onValue, ref, set, push, query, orderByChild, startAt, remove} from "firebase/database";
 import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut, useAuthState} from 'firebase/auth';
 
 const firebaseConfig = {
@@ -115,6 +115,11 @@ export const pushData = (path, value) => {
   const listRef = ref(database, path);
   const objRef = push(listRef);
   set(objRef, value);
+};
+
+export const deleteData = (dataPath) => {
+  const listRef = ref(database, dataPath);
+  remove(listRef);
 };
 
 export const saveUserToDb = (userObject) => {
