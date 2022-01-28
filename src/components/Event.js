@@ -23,14 +23,12 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
   return joinedMembers.includes(uid);
 };
 
-
-
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
   let [joined, setJoined] = useState(false); // handle can't-join-twice later
 
   return (
-    <Card sx={{ maxWidth: 345, mb: 5 }}>
+    <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
       <CardHeader
         title={event.name}
         subheader={event.date}
@@ -54,11 +52,21 @@ export default function Event({ event, userList, user }) {
         {Object.values(event.people)[0] === user.uid ? (
           <DeleteButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
         ) : isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
-          <LeaveButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
+          <LeaveButton
+            key={event}
+            event={event}
+            userId={user.uid}
+            setJoined={setJoined}
+          />
         ) : currCapacity >= event.max ? (
           <Button disabled> Event Full </Button>
         ) : (
-          <JoinButton key={event} event={event} userId={user.uid} setJoined={setJoined}/>
+          <JoinButton
+            key={event}
+            event={event}
+            userId={user.uid}
+            setJoined={setJoined}
+          />
         )}
       </CardActions>
     </Card>

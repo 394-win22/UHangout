@@ -1,4 +1,3 @@
-import "./App.css";
 import { useEffect } from "react";
 import { Welcome } from "./components/Welcome";
 import {
@@ -9,10 +8,12 @@ import {
   saveUserToDb,
   useEvents,
 } from "./utilities/firebase.js";
+import Typography from "@mui/material/Typography";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import JoinedEvents from "./components/JoinedEvents";
 import Messages from "./components/Messages";
+import BottomMenu from "./components/BottomMenu";
 
 function getEventList(events) {
   var listOfEvent = Object.entries(events).map(([eventId, eventObj]) => {
@@ -65,26 +66,34 @@ function App() {
     return <h1>Loading the events...</h1>;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Welcome user={user} events={eventList} userList={userList} />
-          }
-        />
+    <>
+      {" "}
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Welcome user={user} events={eventList} userList={userList} />
+            }
+          />
 
-        {/* <Route path="/events" element={<EventList/>} /> */}
-        <Route
-          path="/joined"
-          element={
-            <JoinedEvents events={eventList} userList={userList} user={user} />
-          }
-        />
+          {/* <Route path="/events" element={<EventList/>} /> */}
+          <Route
+            path="/joined"
+            element={
+              <JoinedEvents
+                events={eventList}
+                userList={userList}
+                user={user}
+              />
+            }
+          />
 
-        <Route path="/messages" element={<Messages />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/messages" element={<Messages />} />
+        </Routes>
+        {user && <BottomMenu user={user} />}
+      </BrowserRouter>
+    </>
   );
 }
 
