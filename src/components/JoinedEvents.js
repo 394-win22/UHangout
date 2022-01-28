@@ -13,7 +13,7 @@ const JoinedEvents = ({ events, userList, user }) => {
       {events.map((event) => {
         console.log(event.people)
         return (
-        event.people.includes(user.uid)&&
+        Object.values(event.people).includes(user.uid)&&
         <Event
           key={event.id}
           event= {event}

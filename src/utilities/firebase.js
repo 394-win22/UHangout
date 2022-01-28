@@ -130,16 +130,22 @@ export const saveUserToDb = (userObject) => {
   });
 };
 
-export const handlePostPhoto = (image) => {
+
+
+export const uploadPhotoToStorage = async (image) => {
   const storageRef = sRef(storage, "images/" + image.name);
-  // console.log(image);
-  uploadBytes(storageRef, image).then((snapshot) => {
-    // console.log("Uploaded an image!");
-  });
+  return uploadBytes(storageRef, image).then((snapshot)=>
+      getDownloadURL(snapshot.ref).then((downloadURL) => downloadURL)
+      )
 };
+
+
 
 //GET THIS TO RETURN THE URL OF THE IMAGE???
 export const getImageFromStorage = (imageName) => {
   console.log(imageName);
-  getDownloadURL(sRef(storage, "images/" + imageName)).then((url) => url);
+  getDownloadURL(sRef(storage, "images/" + imageName)).then((url) => {
+    console.log("url:",url);
+    return url;
+  });
 };
