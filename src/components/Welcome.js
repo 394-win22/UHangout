@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import BottomMenu from "./BottomMenu";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import SearchBar from "./SearchBar";
+import { useState } from 'react';
 
 import { signInWithGoogle, signOut } from "../utilities/firebase";
 const SignInButton = () => {
@@ -24,6 +26,16 @@ const SignOutButton = () => (
 );
 
 export const Welcome = ({ user, events, userList }) => {
+  const [query, setQuery] = useState("");
+
+  let filteredEvents = events;
+  if (query != "") {
+    filteredEvents = events.filter((e) => {
+      return e.name.toLowerCase().includes(query.toLowerCase())
+        || e.description.toLowerCase().includes(query.toLowerCase());
+    });
+  }
+
   return (
     <div className="App">
       <Typography variant="h4" align="center" sx={{ padding: 3 }}>
@@ -32,7 +44,8 @@ export const Welcome = ({ user, events, userList }) => {
       {user ? (
         <Box>
           <SignOutButton />
-          <EventList events={events} userList={userList} user={user} />
+          <SearchBar setQuery={setQuery}/>
+          <EventList events={filteredEvents} userList={userList} user={user} />
         </Box>
       ) : (
         <SignInButton />
