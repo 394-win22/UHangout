@@ -59,7 +59,7 @@ export const DeleteButton = ({ event, userId }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="secondary">
            Cancel
           </Button>
           <Button onClick={()=> deleteEvent(event, userId)} color="primary" autoFocus>
