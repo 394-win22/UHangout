@@ -15,7 +15,7 @@ import { useState } from "react";
 
 
 
-const getUserFromUID = (uid, userList) => {
+export const getUserFromUID = (uid, userList) => {
   return userList.filter((user) => user.uid === uid)[0];
 };
 

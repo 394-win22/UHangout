@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SearchBar from "./SearchBar";
 import { useState } from 'react';
+import { getUserFromUID } from "./Event";
 
 import { signInWithGoogle, signOut } from "../utilities/firebase";
 const SignInButton = () => {
@@ -31,8 +32,10 @@ export const Welcome = ({ user, events, userList }) => {
   let filteredEvents = events;
   if (query != "") {
     filteredEvents = events.filter((e) => {
+      //console.log("event e.people:",getUserFromUID(Object.values(e.people)[0], userList));
       return e.name.toLowerCase().includes(query.toLowerCase())
-        || e.description.toLowerCase().includes(query.toLowerCase());
+        || e.description.toLowerCase().includes(query.toLowerCase())
+        || getUserFromUID(Object.values(e.people)[0], userList).displayName.toLowerCase().includes(query.toLowerCase());
     });
   }
 
