@@ -11,6 +11,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
+import moment from 'moment';
 
 import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
 
@@ -60,6 +61,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const [formValues, setFormValues] = useState(defaultValues);
   const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
+  const [now, setNow] = useState(moment());
 
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -73,6 +75,12 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //setNow(new Date());
+    if (formValues.eventTime === null) {
+      setDateEmptyError(true);
+      return;
+    }
+
     if (formValues.eventTime === null) {
       setDateEmptyError(true);
       return;
@@ -160,6 +168,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
           />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
+              minDateTime={now}
               name="eventTime"
               renderInput={(props) => <TextField {...props} />}
               label="Date & Time *"
