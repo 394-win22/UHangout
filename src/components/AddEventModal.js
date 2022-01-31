@@ -163,13 +163,16 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             onChange={handleInputChange}
             label="Event Location"
           /> */}
-          <GooglePlacesAutocomplete
-            required
-            className={classes.container}
-            value={formValues.location}
-            onChange={handleInputChange}
-            apiKey="AIzaSyARmOPd2291n0hygmYxmbPPwQXQACzfJOc"
-          />
+          <Box sx={{maxWidth: 250, mx: "auto", background: "paper"}}> 
+            <GooglePlacesAutocomplete
+              required
+              value={formValues.location}
+              onChange={handleInputChange}
+              apiKey="AIzaSyARmOPd2291n0hygmYxmbPPwQXQACzfJOc"
+              style={{zIndex: 100}}
+            >
+            </GooglePlacesAutocomplete>
+          </Box>
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
               name="eventTime"
