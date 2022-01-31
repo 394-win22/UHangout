@@ -61,6 +61,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const [formValues, setFormValues] = useState(defaultValues);
   const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
+
   const [now, setNow] = useState(moment());
 
   const handleInputChange = (e) => {
@@ -81,10 +82,6 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
       return;
     }
 
-    if (formValues.eventTime === null) {
-      setDateEmptyError(true);
-      return;
-    }
 
     const photoUrl = await uploadPhotoToStorage(image);
     console.log(photoUrl);
@@ -193,6 +190,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             label="Duration (Hours)"
             type="number"
             InputLabelProps={{ shrink: true }}
+            InputProps={{ inputProps: { min: 1} }}
           />{" "}
           <input
             required
