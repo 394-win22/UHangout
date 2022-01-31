@@ -12,6 +12,7 @@ import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
 import { DeleteButton } from "./deleteButton";
 import { useState } from "react";
+import { ViewParticipant } from "./ViewParticipant";
 
 
 
@@ -49,7 +50,11 @@ export default function Event({ event, userList, user }) {
         </Typography>
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
+        {Object.values(event.people).includes(user.uid) &&
+        (<ViewParticipant key={event} event ={event} userId= {user.uid}>
+          </ViewParticipant>)}
         {Object.values(event.people)[0] === user.uid ? (
+
           <DeleteButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
         ) : isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
           <LeaveButton
