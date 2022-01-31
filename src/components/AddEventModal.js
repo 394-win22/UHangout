@@ -13,6 +13,9 @@ import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
 
 import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+
+
 
 const useStyles = makeStyles({
   container: {
@@ -113,6 +116,12 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     }
   };
   return (
+    <>
+    <script
+      type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvv9b0WzuQ_KbzOUhbf5w-6b4IK-jponU&libraries=places"
+    /> 
+
     <Modal
       open={open}
       onClose={handleClose}
@@ -147,12 +156,19 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             type="number"
             InputLabelProps={{ shrink: true }}
           />
-          <TextField
+          {/* <TextField
             required
             name="location"
             value={formValues.location}
             onChange={handleInputChange}
             label="Event Location"
+          /> */}
+          <GooglePlacesAutocomplete
+            required
+            className={classes.container}
+            value={formValues.location}
+            onChange={handleInputChange}
+            apiKey="AIzaSyARmOPd2291n0hygmYxmbPPwQXQACzfJOc"
           />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
@@ -208,6 +224,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
         </form>
       </Box>
     </Modal>
+    </>
   );
 };
 export default AddEventModal;
