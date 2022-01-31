@@ -186,6 +186,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             InputLabelProps={{ shrink: true }}
           />{" "}
           <input
+            required
             type="file"
             accept="image/*"
             onChange={(e) => {
