@@ -45,7 +45,8 @@ export default function Event({ event, userList, user }) {
     setExpanded(!expanded);
   };
 
-  const [needExpansion, setNeedExpansion] = useState(event.description.length > 10);
+  let descriptionPreviewLimit = 20;
+  const [needExpansion, setNeedExpansion] = useState(event.description.length > descriptionPreviewLimit);
   const expandStr = needExpansion ? "..." : "";
 
   return (
@@ -57,8 +58,7 @@ export default function Event({ event, userList, user }) {
           getUserFromUID(event.people[0], userList).displayName
         }`}
       ></CardHeader>
-      <CardActions>
-      </CardActions>
+      
       <CardMedia component="img" imageURL={event.photoUrl} height="140" image={event.photoUrl} alt={event.name} />
       <CardContent>
         <Typography gutterBottom variant="body" component="div">
@@ -68,6 +68,15 @@ export default function Event({ event, userList, user }) {
           Capacity: {currCapacity} / {event.max}
         </Typography>
       </CardContent>
+      
+      <Collapse in={!expanded} timeout="auto" unmountOnExit>
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {event.description.slice(0, descriptionPreviewLimit)+expandStr}
+        </Typography>
+      </CardContent>
+      </Collapse>
+
       {needExpansion ?
       <ExpandMore
           expand={expanded}
@@ -78,20 +87,15 @@ export default function Event({ event, userList, user }) {
         <ExpandMoreIcon />
         </ExpandMore>
         : <></>}
-      <Collapse in={!expanded} timeout="auto" unmountOnExit>
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {event.description.slice(0, 10)+expandStr}
-        </Typography>
-      </CardContent>
-      </Collapse>
+
       <Collapse in={expanded} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography style={{ wordWrap: "break-word" }} display="inline" variant="body2" color="text.secondary">
           {event.description}
         </Typography>
       </CardContent>
       </Collapse>
+
       <CardActions style={{ justifyContent: "center" }}>
         {Object.values(event.people)[0] === user.uid ? (
           <DeleteButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
