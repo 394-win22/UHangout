@@ -17,6 +17,7 @@ import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
+import { ViewParticipants } from "./ViewParticipants";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -55,9 +56,8 @@ export default function Event({ event, userList, user }) {
       <CardHeader
         title={event.name}
         subheader={event.date}
-        subheader={`Hosted by ${
-          getUserFromUID(event.people[0], userList).displayName
-        }`}
+        subheader={`Hosted by ${getUserFromUID(event.people[0], userList).displayName
+          }`}
       ></CardHeader>
       <CardMedia component="img" imageURL={event.photoUrl} height="140" image={event.photoUrl} alt={event.name} />
       <CardContent>
@@ -100,6 +100,12 @@ export default function Event({ event, userList, user }) {
       </Collapse>
 
       <CardActions style={{ justifyContent: "center" }}>
+        {Object.values(event.people).includes(user.uid) &&
+          (<ViewParticipants key={event} event={event} userId={user.uid}>
+          </ViewParticipants>)}
+      </CardActions>
+      <CardActions style={{ justifyContent: "center" }}>
+
         {Object.values(event.people)[0] === user.uid ? (
           <>
             <EditEventButton

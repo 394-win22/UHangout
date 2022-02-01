@@ -130,6 +130,23 @@ export const saveUserToDb = (userObject) => {
   });
 };
 
+export const getUserDataFromUid = async (uid) => {
+  const dbRef = ref(database, `/users/${uid}`);
+  var output;
+  await onValue(
+    dbRef,
+    (snapshot) => {
+      const val = snapshot.val();
+      // return val;
+      output = snapshot.val();
+    },
+    (error) => {
+
+    }
+  );
+  return output;
+}
+
 
 
 export const uploadPhotoToStorage = async (image) => {
