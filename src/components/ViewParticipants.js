@@ -12,13 +12,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import { Link } from "@mui/material";
+
+
+
+
 
 const theme = createTheme({
   palette: {
     primary: {
       // Purple and green play nicely together.
-      main: red[500],
+      main: "#1976D2",
     },
     secondary: {
       // This is green.A700 as hex.
@@ -33,14 +36,14 @@ export const ViewParticipants = ({ event, userId }) => {
   const [userDataList, setUserDataList] = React.useState([]);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     var newList = [];
-    Object.values(event.people).forEach( async (uid) => {
+    Object.values(event.people).forEach(async (uid) => {
       await getUserDataFromUid(uid).then((userData) => {
-      newList.push(userData);
-    }) ;
-    setUserDataList(newList);
-  });
+        newList.push(userData);
+      });
+      setUserDataList(newList);
+    });
   }, [event]);
 
   const handleClickOpen = () => {
@@ -50,6 +53,13 @@ export const ViewParticipants = ({ event, userId }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const sendToAll= ()=>{
+    var emailList =[];
+    /*userDataList.forEach(function(element){emailList.push(element.email+";")})*/
+
+  };
+
   console.log(userDataList);
 
 
@@ -62,31 +72,37 @@ export const ViewParticipants = ({ event, userId }) => {
           variant="contained"
           color="primary"
         >
-            View Participants
+          View Participants
         </Button>
         <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-        Participants
-        </DialogTitle>
-        <DialogContent>
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          {userDataList.map((userData)=>(
-            <ListItem component={Button} href={'mailto:yourmail@domain.com'}>
-            <ListItemAvatar>
-              <Avatar src={userData.photoURL}>
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={userData.displayName} secondary={userData.email} />
-          </ListItem>
-          ))}
-          </List>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-           Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+          <DialogTitle>
+            Participants
+          </DialogTitle>
+          <DialogContent>
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+              {userDataList.map((userData) => (
+                <ListItem component={Button} href={`mailto:${userData.email}`}>
+                  <ListItemAvatar>
+                    <Avatar src={userData.photoURL}>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={userData.displayName} secondary={userData.email} />
+                </ListItem>
+              ))}
+            </List>
+          </DialogContent>
+          <DialogActions>
+            {Object.values(event.people)[0] === userId && (
+              <Button variant ='contained' onClick={sendToAll} color="secondary">
+                SEND GROUP MESSAGE
+              </Button>
+            )}
+            <Button variant = 'contained' onClick={handleClose} color="primary">
+              Close
+            </Button>
+            
+          </DialogActions>
+        </Dialog>
       </ThemeProvider>
     </>
   );

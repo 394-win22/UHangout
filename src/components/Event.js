@@ -33,9 +33,8 @@ export default function Event({ event, userList, user }) {
       <CardHeader
         title={event.name}
         subheader={event.date}
-        subheader={`Hosted by ${
-          getUserFromUID(event.people[0], userList).displayName
-        }`}
+        subheader={`Hosted by ${getUserFromUID(event.people[0], userList).displayName
+          }`}
       ></CardHeader>
       <CardMedia component="img" imageURL={event.photoUrl} height="140" image={event.photoUrl} alt={event.name} />
       <CardContent>
@@ -51,8 +50,11 @@ export default function Event({ event, userList, user }) {
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
         {Object.values(event.people).includes(user.uid) &&
-        (<ViewParticipants key={event} event ={event} userId= {user.uid}>
+          (<ViewParticipants key={event} event={event} userId={user.uid}>
           </ViewParticipants>)}
+      </CardActions>
+      <CardActions style={{ justifyContent: "center" }}>
+
         {Object.values(event.people)[0] === user.uid ? (
 
           <DeleteButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
