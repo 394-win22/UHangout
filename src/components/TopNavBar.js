@@ -12,7 +12,7 @@ const TopNavBar = ({ isLoggedIn, setQuery }) => {
     <Box sx={{ flexGrow: 1, paddingBottom: 3 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, paddingLeft: 3 }}>
+          <Typography variant="h5" component="div" sx={{ flexGrow: 1, paddingLeft: 1 }}>
             UHangout
           </Typography>
           <SearchBar setQuery={setQuery} />
