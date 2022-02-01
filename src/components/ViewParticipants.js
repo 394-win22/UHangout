@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
-import { deleteData } from "../utilities/firebase";
+import { deleteData, getUserDataFromUid } from "../utilities/firebase";
 import Button from "@mui/material/Button";
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -22,16 +22,32 @@ const theme = createTheme({
   },
 });
 
-export const ViewParticipant = ({ event, userId }) => {
+export const ViewParticipants = ({ event, userId }) => {
   const [open, setOpen] = React.useState(false);
-  
+
+  const [userDataList, setUserDataList] = React.useState([]);
+
+
+  useEffect(()=>{
+    var newList = [];
+    Object.values(event.people).forEach( async (uid) => {
+      await getUserDataFromUid(uid).then((userData) => {
+      newList.push(userData);
+    }) ;
+    setUserDataList(newList);
+  });
+  }, [event]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
+  console.log(userDataList);
+
+
 
   return (
     <>

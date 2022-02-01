@@ -12,7 +12,7 @@ import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
 import { DeleteButton } from "./deleteButton";
 import { useState } from "react";
-import { ViewParticipant } from "./ViewParticipant";
+import { ViewParticipants } from "./ViewParticipants";
 
 
 
@@ -27,7 +27,7 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
   let [joined, setJoined] = useState(false); // handle can't-join-twice later
-  
+
   return (
     <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
       <CardHeader
@@ -51,8 +51,8 @@ export default function Event({ event, userList, user }) {
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
         {Object.values(event.people).includes(user.uid) &&
-        (<ViewParticipant key={event} event ={event} userId= {user.uid}>
-          </ViewParticipant>)}
+        (<ViewParticipants key={event} event ={event} userId= {user.uid}>
+          </ViewParticipants>)}
         {Object.values(event.people)[0] === user.uid ? (
 
           <DeleteButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
