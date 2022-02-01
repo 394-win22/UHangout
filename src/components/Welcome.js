@@ -1,45 +1,25 @@
-import EventList from "./EventList";
-import Box from "@mui/material/Box";
-import BottomMenu from "./BottomMenu";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import EventList from "./EventList"
+import { useState } from 'react'
+import { getUserFromUID } from "./Event"
 
-import { signInWithGoogle, signOut } from "../utilities/firebase";
-const SignInButton = () => {
-  return (
-    <Box textAlign="center">
-      <Button variant="contained" onClick={signInWithGoogle}>
-        Sign In
-      </Button>
-    </Box>
-  );
-};
-
-const SignOutButton = () => (
-  <Box textAlign="center">
-    <Button variant="contained" onClick={() => signOut()} sx={{ mb: 3 }}>
-      Sign Out
-    </Button>
-  </Box>
-);
+import TopNavBar from "./TopNavBar"
 
 export const Welcome = ({ user, events, userList }) => {
+  const [query, setQuery] = useState("");
+
+  let filteredEvents = events;
+  if (query != "") {
+    filteredEvents = events.filter((e) => {
+      return e.name.toLowerCase().includes(query.toLowerCase())
+        || e.description.toLowerCase().includes(query.toLowerCase())
+        || getUserFromUID(Object.values(e.people)[0], userList).displayName.toLowerCase().includes(query.toLowerCase());
+    });
+  }
+
   return (
     <div className="App">
-      <Typography variant="h4" align="center" sx={{ padding: 3 }}>
-        UHangout
-      </Typography>
-      {user ? (
-        <Box>
-          <SignOutButton />
-          <EventList events={events} userList={userList} user={user} />
-        </Box>
-      ) : (
-        <SignInButton />
-      )}{" "}
-      <br />
-      <br />
-      <br />
+      <TopNavBar isLoggedIn={user ? true : false} setQuery={setQuery} />
+      <EventList events={filteredEvents} userList={userList} user={user} />
     </div>
-  );
-};
+  )
+}
