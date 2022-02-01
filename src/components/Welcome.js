@@ -19,7 +19,7 @@ export const Welcome = ({ user, events, userList }) => {
       return e.name.toLowerCase().includes(lowerCaseQuery)
         || e.description.toLowerCase().includes(lowerCaseQuery)
         || getUserFromUID(Object.values(e.people)[0], userList).displayName.toLowerCase().includes(lowerCaseQuery)
-        || time.includes(lowerCaseQuery)
+        || time.toLowerCase().includes(lowerCaseQuery)
     });
   }
 
