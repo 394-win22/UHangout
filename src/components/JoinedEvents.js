@@ -5,7 +5,6 @@ import { useUserState } from "../utilities/firebase";
 import Typography from "@mui/material/Typography";
 
 const JoinedEvents = ({ events, userList, user }) => {
-  // console.log(user.u
   return (
     <>
       <Typography variant="h4" align="center" sx={{ padding: 3 }}>
