@@ -12,8 +12,21 @@ import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
 import { DeleteButton } from "./deleteButton";
 import { useState } from "react";
+import Collapse from '@mui/material/Collapse';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
 
-
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 const getUserFromUID = (uid, userList) => {
   return userList.filter((user) => user.uid === uid)[0];
@@ -26,7 +39,15 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
   let [joined, setJoined] = useState(false); // handle can't-join-twice later
-  
+
+  const [expanded, setExpanded] = React.useState(false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const [needExpansion, setNeedExpansion] = useState(event.description.length > 10);
+  const expandStr = needExpansion ? "..." : "";
+
   return (
     <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
       <CardHeader
@@ -36,6 +57,8 @@ export default function Event({ event, userList, user }) {
           getUserFromUID(event.people[0], userList).displayName
         }`}
       ></CardHeader>
+      <CardActions>
+      </CardActions>
       <CardMedia component="img" imageURL={event.photoUrl} height="140" image={event.photoUrl} alt={event.name} />
       <CardContent>
         <Typography gutterBottom variant="body" component="div">
@@ -44,10 +67,31 @@ export default function Event({ event, userList, user }) {
         <Typography gutterBottom variant="body" component="div">
           Capacity: {currCapacity} / {event.max}
         </Typography>
+      </CardContent>
+      {needExpansion ?
+      <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+        <ExpandMoreIcon />
+        </ExpandMore>
+        : <></>}
+      <Collapse in={!expanded} timeout="auto" unmountOnExit>
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {event.description.slice(0, 10)+expandStr}
+        </Typography>
+      </CardContent>
+      </Collapse>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <CardContent>
         <Typography variant="body2" color="text.secondary">
           {event.description}
         </Typography>
       </CardContent>
+      </Collapse>
       <CardActions style={{ justifyContent: "center" }}>
         {Object.values(event.people)[0] === user.uid ? (
           <DeleteButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
