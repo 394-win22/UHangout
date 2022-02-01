@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
-import { deleteData, getUserDataFromUid } from "../utilities/firebase";
+import { getUserDataFromUid } from "../utilities/firebase";
 import Button from "@mui/material/Button";
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import { Link } from "@mui/material";
 
 const theme = createTheme({
   palette: {
@@ -61,19 +66,24 @@ export const ViewParticipants = ({ event, userId }) => {
         </Button>
         <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-           Delete Event
+        Participants
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete the selected Event?
-          </DialogContentText>
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          {userDataList.map((userData)=>(
+            <ListItem component={Button} href={'mailto:yourmail@domain.com'}>
+            <ListItemAvatar>
+              <Avatar src={userData.photoURL}>
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={userData.displayName} secondary={userData.email} />
+          </ListItem>
+          ))}
+          </List>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-           Cancel
-          </Button>
-          <Button color="primary" autoFocus>
-           Yes
+           Close
           </Button>
         </DialogActions>
       </Dialog>
