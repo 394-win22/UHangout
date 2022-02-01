@@ -12,8 +12,7 @@ import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
 import { DeleteButton } from "./deleteButton";
 import { useState } from "react";
-
-
+import { EditEventButton } from "./EditEventButton";
 
 const getUserFromUID = (uid, userList) => {
   return userList.filter((user) => user.uid === uid)[0];
@@ -26,7 +25,7 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
   let [joined, setJoined] = useState(false); // handle can't-join-twice later
-  
+
   return (
     <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
       <CardHeader
@@ -36,7 +35,13 @@ export default function Event({ event, userList, user }) {
           getUserFromUID(event.people[0], userList).displayName
         }`}
       ></CardHeader>
-      <CardMedia component="img" imageURL={event.photoUrl} height="140" image={event.photoUrl} alt={event.name} />
+      <CardMedia
+        component="img"
+        imageURL={event.photoUrl}
+        height="140"
+        image={event.photoUrl}
+        alt={event.name}
+      />
       <CardContent>
         <Typography gutterBottom variant="body" component="div">
           Time: {moment(event.eventTime).format("MMMM Do YYYY, h:mm a")}
@@ -50,7 +55,20 @@ export default function Event({ event, userList, user }) {
       </CardContent>
       <CardActions style={{ justifyContent: "center" }}>
         {Object.values(event.people)[0] === user.uid ? (
-          <DeleteButton key={event} event={event} userId={user.uid} setJoined={setJoined} />
+          <>
+            <EditEventButton
+              key={event}
+              event={event}
+              userId={user.uid}
+              setJoined={setJoined}
+            />{" "}
+            <DeleteButton
+              key={event}
+              event={event}
+              userId={user.uid}
+              setJoined={setJoined}
+            />
+          </>
         ) : isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
           <LeaveButton
             key={event}
