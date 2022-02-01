@@ -146,6 +146,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             onChange={handleInputChange}
             label="Event Name"
             variant="outlined"
+            inputProps={{ maxLength: 20 }}
           />
           <TextField
             required
