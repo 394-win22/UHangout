@@ -55,9 +55,12 @@ export const ViewParticipants = ({ event, userId }) => {
   };
 
   const sendToAll= ()=>{
-    var emailList =[];
-    /*userDataList.forEach(function(element){emailList.push(element.email+";")})*/
-
+    var emailString ="";
+    for(let x in userDataList){
+      emailString+=x;
+    }
+    const mailto=  "mailto:"+ emailString;
+    window.location.href = mailto;
   };
 
   console.log(userDataList);
@@ -93,6 +96,7 @@ export const ViewParticipants = ({ event, userId }) => {
           </DialogContent>
           <DialogActions>
             {Object.values(event.people)[0] === userId && (
+              
               <Button variant ='contained' onClick={sendToAll} color="secondary">
                 SEND GROUP MESSAGE
               </Button>
