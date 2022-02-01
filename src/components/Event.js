@@ -44,6 +44,9 @@ export default function Event({ event, userList, user }) {
           Time: {moment(event.eventTime).format("MMMM Do YYYY, h:mm a")}
         </Typography>
         <Typography gutterBottom variant="body" component="div">
+          Duration: {event.duration} hour{parseInt(event.duration) > 1 ? 's' : ''}
+        </Typography>
+        <Typography gutterBottom variant="body" component="div">
           Capacity: {currCapacity} / {event.max}
         </Typography>
         <Typography variant="body2" color="text.secondary">
