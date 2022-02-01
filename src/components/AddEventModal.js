@@ -11,6 +11,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
+import moment from 'moment';
 
 import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
 
@@ -61,6 +62,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
 
+  const [now, setNow] = useState(moment());
+
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -73,10 +76,12 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //setNow(new Date());
     if (formValues.eventTime === null) {
       setDateEmptyError(true);
       return;
     }
+
 
     const photoUrl = await uploadPhotoToStorage(image);
     console.log(photoUrl);
@@ -141,6 +146,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             onChange={handleInputChange}
             label="Event Name"
             variant="outlined"
+            inputProps={{ maxLength: 20 }}
           />
           <TextField
             required
@@ -160,6 +166,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
           />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
+              minDateTime={now}
               name="eventTime"
               renderInput={(props) => <TextField {...props} />}
               label="Date & Time *"
@@ -184,8 +191,10 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             label="Duration (Hours)"
             type="number"
             InputLabelProps={{ shrink: true }}
+            InputProps={{ inputProps: { min: 1} }}
           />{" "}
           <input
+            required
             type="file"
             accept="image/*"
             onChange={(e) => {

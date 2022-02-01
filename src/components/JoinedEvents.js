@@ -24,6 +24,9 @@ const JoinedEvents = ({ events, userList, user }) => {
             )
           );
         })}
+        <br />
+        <br />
+        <br />
       </Box>
     </>
   );
