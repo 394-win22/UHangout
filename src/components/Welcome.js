@@ -1,3 +1,5 @@
+import moment from "moment"
+
 import EventList from "./EventList"
 import { useState } from 'react'
 import { getUserFromUID } from "./Event"
@@ -9,10 +11,15 @@ export const Welcome = ({ user, events, userList }) => {
 
   let filteredEvents = events;
   if (query != "") {
+    const lowerCaseQuery = query.toLowerCase()
     filteredEvents = events.filter((e) => {
-      return e.name.toLowerCase().includes(query.toLowerCase())
-        || e.description.toLowerCase().includes(query.toLowerCase())
-        || getUserFromUID(Object.values(e.people)[0], userList).displayName.toLowerCase().includes(query.toLowerCase());
+      let time = moment(e.eventTime)
+      time = time.format('MMMM Do YYYY, h:mm a')
+
+      return e.name.toLowerCase().includes(lowerCaseQuery)
+        || e.description.toLowerCase().includes(lowerCaseQuery)
+        || getUserFromUID(Object.values(e.people)[0], userList).displayName.toLowerCase().includes(lowerCaseQuery)
+        || time.includes(lowerCaseQuery)
     });
   }
 
