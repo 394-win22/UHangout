@@ -8,7 +8,6 @@ import {
   saveUserToDb,
   useEvents,
 } from "./utilities/firebase.js";
-import Typography from "@mui/material/Typography";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import JoinedEvents from "./components/JoinedEvents";

@@ -12,6 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import { Tooltip } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -27,7 +28,7 @@ const theme = createTheme({
 });
 
 export const JoinButton = ({ event, userId, setJoined }) => {
-  function updatePeopleData(event, userId) {
+  const updatePeopleData = (event, userId) => {
     // console.log(userId);
     pushData("events/" + event.id + "/people", userId);
     setJoined(true);
@@ -45,6 +46,27 @@ export const JoinButton = ({ event, userId, setJoined }) => {
   };
 
   let eventTime = moment(event.eventTime).format("MMMM Do YYYY, h:mm a");
+
+  if (!userId) {
+    return (
+      <>
+      <ThemeProvider theme={theme}>
+      <Tooltip title="Please Log In">
+        <span>
+          <Button
+            disabled
+            variant="contained"
+            color="secondary"
+          >
+            Join Event
+          </Button>
+          </span>
+      </Tooltip>
+        
+      </ThemeProvider>
+    </>
+    )
+  }
 
   return (
     <>
