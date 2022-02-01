@@ -14,7 +14,7 @@ import { DeleteButton } from "./deleteButton";
 import { useState } from "react";
 import { EditEventButton } from "./EditEventButton";
 
-const getUserFromUID = (uid, userList) => {
+export const getUserFromUID = (uid, userList) => {
   return userList.filter((user) => user.uid === uid)[0];
 };
 
@@ -24,7 +24,8 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
 
 export default function Event({ event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
-  let [joined, setJoined] = useState(false); // handle can't-join-twice later
+  const [joined, setJoined] = useState(false); // handle can't-join-twice later
+  const userId = user ? user.uid : ""
 
   return (
     <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
@@ -45,6 +46,9 @@ export default function Event({ event, userList, user }) {
       <CardContent>
         <Typography gutterBottom variant="body" component="div">
           Time: {moment(event.eventTime).format("MMMM Do YYYY, h:mm a")}
+        </Typography>
+        <Typography gutterBottom variant="body" component="div">
+          Duration: {event.duration} hour{parseInt(event.duration) > 1 ? 's' : ''}
         </Typography>
         <Typography gutterBottom variant="body" component="div">
           Capacity: {currCapacity} / {event.max}
@@ -73,7 +77,7 @@ export default function Event({ event, userList, user }) {
           <LeaveButton
             key={event}
             event={event}
-            userId={user.uid}
+            userId={userId}
             setJoined={setJoined}
           />
         ) : currCapacity >= event.max ? (
@@ -82,7 +86,7 @@ export default function Event({ event, userList, user }) {
           <JoinButton
             key={event}
             event={event}
-            userId={user.uid}
+            userId={userId}
             setJoined={setJoined}
           />
         )}
