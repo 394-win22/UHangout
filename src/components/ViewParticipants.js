@@ -1,21 +1,16 @@
 import React, { useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
 import { getUserDataFromUid } from "../utilities/firebase";
 import Button from "@mui/material/Button";
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-
-
-
-
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
 
 const theme = createTheme({
   palette: {
@@ -35,7 +30,6 @@ export const ViewParticipants = ({ event, userId }) => {
 
   const [userDataList, setUserDataList] = React.useState([]);
 
-
   useEffect(() => {
     var newList = [];
     Object.values(event.people).forEach(async (uid) => {
@@ -54,18 +48,18 @@ export const ViewParticipants = ({ event, userId }) => {
     setOpen(false);
   };
 
-  const sendToAll= ()=>{
-    var emailString ="";
-    for(let x in userDataList){
-      emailString+=x;
+  const sendToAll = () => {
+    var emailString = "";
+    var length = userDataList.length;
+    for (var i = 0; i < length; i++) {
+      emailString += userDataList[i].email;
+      if (i !== length - 1) {
+        emailString += "; ";
+      }
     }
-    const mailto=  "mailto:"+ emailString;
+    const mailto = "mailto:" + emailString;
     window.location.href = mailto;
   };
-
-  console.log(userDataList);
-
-
 
   return (
     <>
@@ -78,33 +72,31 @@ export const ViewParticipants = ({ event, userId }) => {
           View Participants
         </Button>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>
-            Participants
-          </DialogTitle>
+          <DialogTitle>Participants</DialogTitle>
           <DialogContent>
-            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
               {userDataList.map((userData) => (
                 <ListItem component={Button} href={`mailto:${userData.email}`}>
                   <ListItemAvatar>
-                    <Avatar src={userData.photoURL}>
-                    </Avatar>
+                    <Avatar src={userData.photoURL}></Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary={userData.displayName} secondary={userData.email} />
+                  <ListItemText
+                    primary={userData.displayName}
+                    secondary={userData.email}
+                  />
                 </ListItem>
               ))}
             </List>
           </DialogContent>
           <DialogActions>
             {Object.values(event.people)[0] === userId && (
-              
-              <Button variant ='contained' onClick={sendToAll} color="secondary">
-                SEND GROUP MESSAGE
+              <Button variant="contained" onClick={sendToAll} color="secondary">
+                Send Group Message
               </Button>
             )}
-            <Button variant = 'contained' onClick={handleClose} color="primary">
+            <Button variant="contained" onClick={handleClose} color="primary">
               Close
             </Button>
-            
           </DialogActions>
         </Dialog>
       </ThemeProvider>
