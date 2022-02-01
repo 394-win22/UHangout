@@ -163,7 +163,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             onChange={handleInputChange}
             label="Event Location"
           /> */}
-          <Box sx={{maxWidth: 250, mx: "auto", background: "paper"}}> 
+          <Box sx={{maxWidth: 250, mx: "auto", background: "paper"}}>
+            <Typography variant="caption" align="left"> Enter Location</Typography>
             <GooglePlacesAutocomplete
               required
               value={formValues.location}
@@ -172,11 +173,12 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
               style={{zIndex: 100}}
             >
             </GooglePlacesAutocomplete>
+            
           </Box>
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
               name="eventTime"
-              renderInput={(props) => <TextField {...props} />}
+              renderInput={(props) => <TextField {...props}/>}
               label="Date & Time *"
               value={formValues.eventTime}
               onChange={(newValue) => {
