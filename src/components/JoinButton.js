@@ -27,7 +27,7 @@ const theme = createTheme({
   },
 });
 
-export const JoinButton = ({ event, userId, setJoined }) => {
+export const JoinButton = ({ event, user, setJoined }) => {
   const updatePeopleData = (event, userId) => {
     // console.log(userId);
     pushData("events/" + event.id + "/people", userId);
@@ -47,7 +47,8 @@ export const JoinButton = ({ event, userId, setJoined }) => {
 
   let eventTime = moment(event.eventTime).format("MMMM Do YYYY, h:mm a");
 
-  if (!userId) {
+	console.log(user);
+  if (!user) {
     return (
       <>
         <ThemeProvider theme={theme}>
@@ -91,7 +92,7 @@ export const JoinButton = ({ event, userId, setJoined }) => {
             </Button>
             <Button
               onClick={handleClose}
-              onClick={() => updatePeopleData(event, userId)}
+              onClick={() => updatePeopleData(event, user.uid)}
               variant="contained"
               color="success"
               autoFocus
