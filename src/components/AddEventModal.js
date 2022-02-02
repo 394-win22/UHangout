@@ -11,6 +11,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
@@ -163,17 +164,35 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             onChange={handleInputChange}
             label="Event Location"
           /> */}
-          <Box sx={{maxWidth: 250, mx: "auto", background: "paper"}}>
-            <Typography variant="caption" align="left"> Enter Location</Typography>
+          <Box sx={{maxWidth: 250, mx: "auto", background: "paper"}} textAlign="left" color="gray">
+            <Typography variant="caption" > Enter Location</Typography>
             <GooglePlacesAutocomplete
               required
+              placeholder="Enter"
               value={formValues.location}
               onChange={handleInputChange}
               apiKey="AIzaSyARmOPd2291n0hygmYxmbPPwQXQACzfJOc"
-              style={{zIndex: 100}}
+              selectProps={{
+                styles: {
+                  input: (provided) => ({
+                    ...provided,
+                    color: 'black'
+                  }),
+                  menu: (provided) => ({
+                    ...provided,
+                    color: 'black',
+                    zIndex: 100,
+                    textAlign: 'left', 
+                    placeholder: 'Enter'
+                  }),
+                  singleValue: (provided) => ({
+                    ...provided,
+                    color: 'blue',
+                  })
+                },
+              }}
             >
             </GooglePlacesAutocomplete>
-            
           </Box>
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
