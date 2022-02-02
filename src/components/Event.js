@@ -8,9 +8,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
 import { JoinButton } from "./JoinButton";
-import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
-import { DeleteButton } from "./deleteButton";
+import { DeleteButton } from "./DeleteButton";
 import { useState } from "react";
 import { EditEventButton } from "./EditEventButton";
 import Collapse from "@mui/material/Collapse";
@@ -46,27 +45,24 @@ export default function Event({ event, userList, user }) {
     setExpanded(!expanded);
   };
   let descriptionPreviewLimit = 20;
+
   const [needExpansion, setNeedExpansion] = useState(
     event.description.length > descriptionPreviewLimit
   );
 
   const expandStr = needExpansion ? "..." : "";
 
-
-	console.log(user);
 	if (user) {
   return (
     <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
       <CardHeader
         title={event.name}
-        subheader={event.date}
         subheader={`Hosted by ${
           getUserFromUID(event.people[0], userList).displayName
         }`}
       ></CardHeader>
       <CardMedia
         component="img"
-        imageURL={event.photoUrl}
         height="140"
         image={event.photoUrl}
         alt={event.name}
@@ -92,7 +88,7 @@ export default function Event({ event, userList, user }) {
         </CardContent>
       </Collapse>
 
-      {needExpansion ? (
+      {needExpansion ?? (
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -101,8 +97,6 @@ export default function Event({ event, userList, user }) {
         >
           <ExpandMoreIcon />
         </ExpandMore>
-      ) : (
-        <></>
       )}
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -118,10 +112,11 @@ export default function Event({ event, userList, user }) {
         </CardContent>
       </Collapse>
 
+
+
       <CardActions style={{ justifyContent: "center" }}>
         {Object.values(event.people).includes(user.uid) && (
           <ViewParticipants
-            key={event}
             event={event}
             userId={user.uid}
           ></ViewParticipants>
@@ -131,13 +126,11 @@ export default function Event({ event, userList, user }) {
         {Object.values(event.people)[0] === user.uid ? (
           <>
             <EditEventButton
-              key={event}
               event={event}
               userId={user.uid}
               setJoined={setJoined}
             />{" "}
             <DeleteButton
-              key={event}
               event={event}
               userId={user.uid}
               setJoined={setJoined}
@@ -145,7 +138,6 @@ export default function Event({ event, userList, user }) {
           </>
         ) : isUIDinJoinedMembers(user.uid, Object.values(event.people)) ? (
           <LeaveButton
-            key={event}
             event={event}
             userId={user.uid}
             setJoined={setJoined}
@@ -154,7 +146,6 @@ export default function Event({ event, userList, user }) {
           <Button disabled> Event Full </Button>
         ) : (
           <JoinButton
-            key={event}
             event={event}
             user={user}
             setJoined={setJoined}
@@ -171,14 +162,12 @@ export default function Event({ event, userList, user }) {
     <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
       <CardHeader
         title={event.name}
-        subheader={event.date}
         subheader={`Hosted by ${
           getUserFromUID(event.people[0], userList).displayName
         }`}
       ></CardHeader>
       <CardMedia
         component="img"
-        imageURL={event.photoUrl}
         height="140"
         image={event.photoUrl}
         alt={event.name}
@@ -204,7 +193,7 @@ export default function Event({ event, userList, user }) {
         </CardContent>
       </Collapse>
 
-      {needExpansion ? (
+      {needExpansion ?? (
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -213,8 +202,6 @@ export default function Event({ event, userList, user }) {
         >
           <ExpandMoreIcon />
         </ExpandMore>
-      ) : (
-        <></>
       )}
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
