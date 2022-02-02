@@ -14,7 +14,7 @@ const EventList = ({ events, userList, user }) => {
               key={event.id}
               event={event}
               userList={userList}
-              user={userId}
+              user={user}
             />
           )
         );
