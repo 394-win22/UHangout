@@ -18,11 +18,9 @@ function getEventList(events) {
   var listOfEvent = Object.entries(events).map(([eventId, eventObj]) => {
     return { ...eventObj, id: eventId };
   });
-  console.log("Need to sort the event");
   listOfEvent = listOfEvent.sort((item1, item2) => {
     return item1.eventTime - item2.eventTime;
   });
-  console.log(listOfEvent);
   return listOfEvent;
 }
 
@@ -49,7 +47,6 @@ function App() {
   useEffect(() => {
     if (!userList) return;
     if (!user) return;
-    console.log(user.uid);
 
     const userCount = userList.filter((entry) => entry.uid === user.uid).length;
 
@@ -57,8 +54,6 @@ function App() {
       saveUserToDb(user);
     }
   }, [userList, user]);
-
-  console.log("event List", eventList);
 
   if (userListError || eventListError) return <h1>{userListError}</h1>;
   if (userListLoading || eventListLoading)

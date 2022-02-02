@@ -12,7 +12,6 @@ const JoinedEvents = ({ events, userList, user }) => {
       </Typography>
       <Box sx={{ mx: "auto", width: 300 }}>
         {events.map((event) => {
-          console.log(event.people);
           return (
             Object.values(event.people).includes(user.uid) && (
               <Event
