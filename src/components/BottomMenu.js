@@ -3,7 +3,7 @@ import AddEventModal from "./AddEventModal";
 import Paper from "@mui/material/Paper";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-
+import { withStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 
 //icons
@@ -11,6 +11,24 @@ import AddIcon from "@mui/icons-material/Add";
 import ForumIcon from "@mui/icons-material/Forum";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      main: "#465a82",
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: "#11cb5f",
+    },
+  },
+});
+
 
 const BottomMenu = ({ user }) => {
   const [open, setOpen] = useState(false);
@@ -30,11 +48,13 @@ const BottomMenu = ({ user }) => {
             icon={<TravelExploreIcon />}
             onClick={() => navigate("/")}
           />
+          <ThemeProvider theme={theme}>
           <BottomNavigationAction
             label="Add Event"
             icon={<AddIcon />}
             onClick={handleOpen}
           />
+          </ThemeProvider>
           <AddEventModal
             user={user}
             open={open}
@@ -54,3 +74,4 @@ const BottomMenu = ({ user }) => {
 };
 
 export default BottomMenu;
+

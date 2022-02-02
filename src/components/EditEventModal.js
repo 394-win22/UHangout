@@ -47,7 +47,7 @@ const EditEventModal = ({ event, open, handleOpen, handleClose }) => {
   const classes = useStyles();
 
   const [formValues, setFormValues] = useState(event);
-  const [image, setImage] = useState(event.photoUrl);
+  const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
 
   const handleInputChange = (e) => {
@@ -69,9 +69,9 @@ const EditEventModal = ({ event, open, handleOpen, handleClose }) => {
 
     const photoUrl = await uploadPhotoToStorage(image);
     console.log(photoUrl);
-
+    console.log("HERE");
     formValues.photoUrl = photoUrl;
-
+    console.log(formValues);
     editEventInFirebase(event, formValues);
 
     //NEED TO RERENDER
