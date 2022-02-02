@@ -64,6 +64,8 @@ function App() {
   if (userListLoading || eventListLoading)
     return <h1>Loading the events...</h1>;
 
+  console.log("HERE");
+  console.log(user);
   return (
     <>
       {" "}

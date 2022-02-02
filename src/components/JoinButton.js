@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import moment from "moment"; // date & time
 // Join Button
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -7,12 +7,12 @@ import { pushData } from "../utilities/firebase";
 import Button from "@mui/material/Button";
 
 // Alert Dialog
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import { Tooltip } from '@mui/material';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import { Tooltip } from "@mui/material";
 
 const theme = createTheme({
   palette: {
@@ -32,11 +32,11 @@ export const JoinButton = ({ event, userId, setJoined }) => {
     // console.log(userId);
     pushData("events/" + event.id + "/people", userId);
     setJoined(true);
-  }
+  };
 
   //for dialog
   const [open, setOpen] = React.useState(false);
-  
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -50,32 +50,23 @@ export const JoinButton = ({ event, userId, setJoined }) => {
   if (!userId) {
     return (
       <>
-      <ThemeProvider theme={theme}>
-      <Tooltip title="Please Log In">
-        <span>
-          <Button
-            disabled
-            variant="contained"
-            color="secondary"
-          >
-            Join Event
-          </Button>
-          </span>
-      </Tooltip>
-        
-      </ThemeProvider>
-    </>
-    )
+        <ThemeProvider theme={theme}>
+          <Tooltip title="Please Log In">
+            <span>
+              <Button disabled variant="contained" color="secondary">
+                Join Event
+              </Button>
+            </span>
+          </Tooltip>
+        </ThemeProvider>
+      </>
+    );
   }
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button
-          onClick={handleClickOpen}
-          variant="contained"
-          color="secondary"
-        >
+        <Button onClick={handleClickOpen} variant="contained" color="secondary">
           Join Event
         </Button>
         <Dialog
@@ -88,15 +79,23 @@ export const JoinButton = ({ event, userId, setJoined }) => {
             {"Would you like to join this event?"}
           </DialogTitle>
           <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Event: {event.name}
-            <br/>
-            Time: {eventTime}
-          </DialogContentText>
+            <DialogContentText id="alert-dialog-description">
+              Event: {event.name}
+              <br />
+              Time: {eventTime}
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="error" >Cancel</Button>
-            <Button onClick={handleClose} onClick={() => updatePeopleData(event, userId)} variant="contained" color="success" autoFocus>
+            <Button onClick={handleClose} color="error">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleClose}
+              onClick={() => updatePeopleData(event, userId)}
+              variant="contained"
+              color="success"
+              autoFocus
+            >
               Yes!
             </Button>
           </DialogActions>
