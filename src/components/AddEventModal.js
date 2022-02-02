@@ -187,7 +187,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
                   }),
                   singleValue: (provided) => ({
                     ...provided,
-                    color: 'blue',
+                    color: 'black',
                   })
                 },
               }}
