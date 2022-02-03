@@ -25,11 +25,11 @@ const parseTime = input => {
   else return false
 }
 
-const matchTime = (parsedTime, duration, eventTime, input) => {
-    if (!input.includes(':')) {
+const matchTime = (parsedTime, duration, eventTime, rawInput) => {
+    if (!rawInput.includes(':')) {
       return eventTime.format('MMMM Do') == parsedTime.format('MMMM Do') 
-      || eventTime.format('MMM').toLowerCase() == input 
-      || eventTime.format('MMMM').toLowerCase() == input
+      || eventTime.format('MMM').toLowerCase() == rawInput 
+      || eventTime.format('MMMM').toLowerCase() == rawInput
     }
 
     const parsedDuration = parseInt(duration)
