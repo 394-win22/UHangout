@@ -34,8 +34,12 @@ const matchTime = (parsedTime, duration, eventTime, rawInput) => {
 
     const parsedDuration = parseInt(duration)
     if (!isNaN(parsedDuration)) {
-      const endTime = eventTime.add(duration, 'h').format('YYYY-MM-DD HH:mm')
+      const endTime = eventTime
+                      .add(duration, 'h')
+                      .add(1, 'm')
+                      .format('YYYY-MM-DD HH:mm')
       eventTime.subtract(duration, 'h')
+      eventTime.subtract(2, 'm')
 
       if (parsedTime.isBetween(eventTime, endTime))
         return true
