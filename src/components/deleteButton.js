@@ -3,11 +3,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 import { deleteData } from "../utilities/firebase";
 import Button from "@mui/material/Button";
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Dialog from '@material-ui/core/Dialog';
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Dialog from "@material-ui/core/Dialog";
 
 const theme = createTheme({
   palette: {
@@ -24,11 +24,11 @@ const theme = createTheme({
 
 export const DeleteButton = ({ event, userId }) => {
   const [open, setOpen] = React.useState(false);
-  
+
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -50,23 +50,25 @@ export const DeleteButton = ({ event, userId }) => {
           Delete Event
         </Button>
         <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-           Delete Event
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete the selected Event?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-           Cancel
-          </Button>
-          <Button onClick={()=> deleteEvent(event, userId)} color="primary" autoFocus>
-           Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+          <DialogTitle>Delete Event</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete the selected Event?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="secondary">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => deleteEvent(event, userId)}
+              color="primary"
+              autoFocus
+            >
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
       </ThemeProvider>
     </>
   );

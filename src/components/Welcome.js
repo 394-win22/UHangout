@@ -4,7 +4,7 @@ import EventList from "./EventList"
 import { useState } from 'react'
 import { getUserFromUID } from "./Event"
 
-import TopNavBar from "./TopNavBar"
+import TopNavBar from "./TopNavBar";
 
 const parseTime = input => {
    let parsedTime = moment(input, [
@@ -62,10 +62,14 @@ export const Welcome = ({ user, events, userList }) => {
     });
   }
 
+
   return (
     <div className="App">
       <TopNavBar isLoggedIn={user ? true : false} setQuery={setQuery} />
       <EventList events={filteredEvents} userList={userList} user={user} />
+      <br />
+      <br />
+      <br />
     </div>
-  )
-}
+  );
+};

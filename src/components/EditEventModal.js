@@ -11,9 +11,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
-import moment from 'moment';
-
-import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
+import { setData, uploadPhotoToStorage } from "../utilities/firebase";
 
 const useStyles = makeStyles({
   container: {
@@ -41,28 +39,16 @@ const useStyles = makeStyles({
     overflowY: "scroll",
   },
 });
-function createEventInFirebase(event) {
-  pushData("/events", event);
+function editEventInFirebase(event, formValues) {
+  setData("events/" + event.id, formValues);
 }
 
-const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
+const EditEventModal = ({ event, open, handleOpen, handleClose }) => {
   const classes = useStyles();
-  const defaultValues = {
-    description: "",
-    duration: 0,
-    location: "",
-    max: 2,
-    name: "",
-    people: user ? [user.uid] : "",
-    photoUrl: "",
-    eventTime: null,
-  };
 
-  const [formValues, setFormValues] = useState(defaultValues);
-  const [image, setImage] = useState(null);
+  const [formValues, setFormValues] = useState(event);
+  const [image, setImage] = useState(event.photoUrl);
   const [dateEmptyError, setDateEmptyError] = useState(false);
-
-  const [now, setNow] = useState(moment());
 
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -76,22 +62,13 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //setNow(new Date());
     if (formValues.eventTime === null) {
       setDateEmptyError(true);
       return;
     }
-
-
     const photoUrl = await uploadPhotoToStorage(image);
-
     formValues.photoUrl = photoUrl;
-
-    createEventInFirebase(formValues);
-    setFormValues(defaultValues);
-
-
-    //NEED TO RERENDER
+    editEventInFirebase(event, formValues);
     handleClose();
   };
 
@@ -134,7 +111,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             align="center"
             className={classes.title}
           >
-            Add New Event
+            Edit Your Event
           </Typography>
           <TextField
             required
@@ -143,7 +120,6 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             onChange={handleInputChange}
             label="Event Name"
             variant="outlined"
-            inputProps={{ maxLength: 20 }}
           />
           <TextField
             required
@@ -163,7 +139,6 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
           />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
-              minDateTime={now}
               name="eventTime"
               renderInput={(props) => <TextField {...props} />}
               label="Date & Time *"
@@ -188,10 +163,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             label="Duration (Hours)"
             type="number"
             InputLabelProps={{ shrink: true }}
-            InputProps={{ inputProps: { min: 1} }}
           />{" "}
           <input
-            required
             type="file"
             accept="image/*"
             onChange={(e) => {
@@ -208,7 +181,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             rows={4}
           />
           <Button variant="contained" endIcon={<SendIcon />} type="submit">
-            Create
+            Edit
           </Button>
           <Button type="button" onClick={() => handleClose()}>
             {" "}
@@ -219,4 +192,4 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     </Modal>
   );
 };
-export default AddEventModal;
+export default EditEventModal;
