@@ -25,6 +25,9 @@ export const Welcome = ({ user, events, userList }) => {
     <div className="App">
       <TopNavBar isLoggedIn={user ? true : false} setQuery={setQuery} />
       <EventList events={filteredEvents} userList={userList} user={user} />
+      <br />
+      <br />
+      <br />
     </div>
   );
 };
