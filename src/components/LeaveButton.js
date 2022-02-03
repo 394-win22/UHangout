@@ -52,6 +52,7 @@ export const LeaveButton = ({ event, userId, setJoined }) => {
           onClick={handleClickOpen}
           variant="contained"
           color="primary"
+					style={{marginTop: "10px"}}
         >
           Leave Event
         </Button>

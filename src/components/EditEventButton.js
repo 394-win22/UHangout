@@ -38,7 +38,7 @@ export const EditEventButton = ({ event, userId }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button onClick={handleClickOpen} variant="contained">
+        <Button onClick={handleClickOpen} variant="contained" style={{marginTop: "10px"}}>
           Edit Event
         </Button>
         <EditEventModal

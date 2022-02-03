@@ -46,6 +46,7 @@ export const DeleteButton = ({ event, userId }) => {
           onClick={handleClickOpen /*deleteEvent(event, userId)*/}
           variant="contained"
           color="primary"
+					style={{marginTop: "10px"}}
         >
           Delete Event
         </Button>
