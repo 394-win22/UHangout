@@ -11,6 +11,7 @@ const EventList = ({ events, userList, user }) => {
         return (
           !Object.values(event.people).includes(userId) && (
             <Event
+            eventList={events}
               key={event.id}
               event={event}
               userList={userList}

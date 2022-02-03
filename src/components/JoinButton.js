@@ -1,5 +1,7 @@
 import * as React from "react";
-import moment from "moment"; // date & time
+import Moment from "moment"; // date & time
+import { extendMoment } from "moment-range";
+
 // Join Button
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { purple } from "@mui/material/colors";
@@ -14,6 +16,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { Tooltip } from "@mui/material";
 
+const moment = extendMoment(Moment);
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -27,10 +31,45 @@ const theme = createTheme({
   },
 });
 
-export const JoinButton = ({ event, user, setJoined }) => {
-  const updatePeopleData = (event, userId) => {
-    pushData("events/" + event.id + "/people", userId);
+function joinEvent(eventList, userId, eventToJoin, setJoined) {
+  const startTime = moment(eventToJoin.eventTime);
+  const endTime = moment(
+    eventToJoin.eventTime + eventToJoin.duration * 60 * 60 * 1000
+  );
+  const range1 = moment.range(startTime, endTime);
+  var canJoin = 1;
+  {
+    eventList.map((event) => {
+      if (Object.values(event.people).includes(userId)) {
+        const newStart = moment(event.eventTime);
+        const newEnd = moment(
+          event.eventTime + event.duration * 60 * 60 * 1000
+        );
+        const range2 = moment.range(newStart, newEnd);
+
+        if (range1.overlaps(range2)) {
+          if (
+            window.confirm(
+              `You have time conflict with event: ${event.name}.\n Are you sure you want to join this event?`
+            )
+          ) {
+            canJoin = 1;
+          } else {
+            canJoin = 0;
+          }
+        }
+      }
+    });
+  }
+  if (canJoin === 1) {
+    pushData("events/" + eventToJoin.id + "/people", userId);
     setJoined(true);
+  }
+}
+
+export const JoinButton = ({ eventList, event, user, setJoined }) => {
+  const updatePeopleData = (event, userId) => {
+    joinEvent(eventList, userId, event, setJoined);
   };
 
   //for dialog

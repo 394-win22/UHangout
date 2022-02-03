@@ -37,7 +37,7 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
   return joinedMembers.includes(uid);
 };
 
-export default function Event({ event, userList, user }) {
+export default function Event({ eventList, event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
   let [joined, setJoined] = useState(false); // handle can't-join-twice later
   const [expanded, setExpanded] = React.useState(false);
@@ -151,12 +151,13 @@ if (user) {
           ) : currCapacity >= event.max ? (
             <Button disabled> Event Full </Button>
           ) : (
-            <JoinButton
-              key={event}
-              event={event}
-              user={user}
-              setJoined={setJoined}
-            />
+          <JoinButton
+            eventList={eventList}
+            key={event}
+            event={event}
+            user={user}
+            setJoined={setJoined}
+          />
           )}
         </CardActions>
       </Card>
