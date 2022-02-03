@@ -1,22 +1,64 @@
-import EventList from "./EventList";
-import { useState } from "react";
-import { getUserFromUID } from "./Event";
+import moment from "moment"
+
+import EventList from "./EventList"
+import { useState } from 'react'
+import { getUserFromUID } from "./Event"
 
 import TopNavBar from "./TopNavBar";
+
+const parseTime = input => {
+   let parsedTime = moment(input, [
+    'h',
+    'h a',
+    'h:mm',
+    'h:mm a',
+    'MMMM',
+    'MMMM D',
+    'MMMM Do',
+    'MMMM Do h',
+    'MMMM Do h:mm',
+    'MMMM Do h:mm a'
+  ])
+
+  if (parsedTime.format() != 'Invalid date')
+    return parsedTime
+  else return false
+}
+
+const matchTime = (parsedTime, duration, eventTime, rawInput) => {
+    if (!rawInput.includes(':')) {
+      return eventTime.format('MMMM Do') == parsedTime.format('MMMM Do') 
+      || eventTime.format('MMM').toLowerCase() == rawInput 
+      || eventTime.format('MMMM').toLowerCase() == rawInput
+    }
+
+    const parsedDuration = parseInt(duration)
+    if (!isNaN(parsedDuration)) {
+      const endTime = eventTime.add(duration, 'h').format('YYYY-MM-DD HH:mm')
+      eventTime.subtract(duration, 'h')
+
+      if (parsedTime.isBetween(eventTime, endTime))
+        return true
+    }
+
+    return false
+}
 
 export const Welcome = ({ user, events, userList }) => {
   const [query, setQuery] = useState("");
 
   let filteredEvents = events;
-  if (query !== "") {
+  if (query != "") {
+    const lowerCaseQuery = query.toLowerCase()
+    const parsedTime = parseTime(lowerCaseQuery)
+  
     filteredEvents = events.filter((e) => {
-      return (
-        e.name.toLowerCase().includes(query.toLowerCase()) ||
-        e.description.toLowerCase().includes(query.toLowerCase()) ||
-        getUserFromUID(Object.values(e.people)[0], userList)
-          .displayName.toLowerCase()
-          .includes(query.toLowerCase())
-      );
+      let eventTime = moment(e.eventTime)
+
+      return e.name.toLowerCase().includes(lowerCaseQuery)
+        || e.description.toLowerCase().includes(lowerCaseQuery)
+        || getUserFromUID(Object.values(e.people)[0], userList).displayName.toLowerCase().includes(lowerCaseQuery)
+        || (parsedTime && matchTime(parsedTime, e.duration, eventTime, lowerCaseQuery))
     });
   }
 
