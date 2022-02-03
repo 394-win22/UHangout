@@ -26,6 +26,12 @@ const parseTime = input => {
 }
 
 const matchTime = (parsedTime, duration, eventTime, input) => {
+    if (!input.includes(':')) {
+      return eventTime.format('MMMM Do') == parsedTime.format('MMMM Do') 
+      || eventTime.format('MMM').toLowerCase() == input 
+      || eventTime.format('MMMM').toLowerCase() == input
+    }
+
     const parsedDuration = parseInt(duration)
     if (!isNaN(parsedDuration)) {
       const endTime = eventTime.add(duration, 'h').format('YYYY-MM-DD HH:mm')
@@ -35,12 +41,7 @@ const matchTime = (parsedTime, duration, eventTime, input) => {
         return true
     }
 
-    if (eventTime.format('MMMM Do') == parsedTime.format('MMMM Do')) 
-      return true
-
-    // Note: will not match if only month is supplied (auto-completes with today's date)
-    // TODO: Make so if only month is put in, then return all events in that month
-    return eventTime.format('MMM').toLowerCase() == input || eventTime.format('MMMM').toLowerCase() == input
+    return false
 }
 
 export const Welcome = ({ user, events, userList }) => {
@@ -52,7 +53,6 @@ export const Welcome = ({ user, events, userList }) => {
     const parsedTime = parseTime(lowerCaseQuery)
   
     filteredEvents = events.filter((e) => {
-      console.log(e)
       let eventTime = moment(e.eventTime)
 
       return e.name.toLowerCase().includes(lowerCaseQuery)
