@@ -85,8 +85,7 @@ export const ViewParticipants = ({ event, userId }) => {
                     secondary={userData.email}
                   />
                 </ListItem>
-              )}
-							)}
+              ))}
             </List>
           </DialogContent>
           <DialogActions>
