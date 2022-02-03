@@ -34,7 +34,7 @@ export const ViewParticipants = ({ event, userId }) => {
     var newList = [];
     Object.values(event.people).forEach(async (uid) => {
       await getUserDataFromUid(uid).then((userData) => {
-        newList.push(userData);
+        newList.push({uid: uid, ...userData});
       });
       setUserDataList(newList);
     });
@@ -65,7 +65,7 @@ export const ViewParticipants = ({ event, userId }) => {
     <>
       <ThemeProvider theme={theme}>
         <Button
-          onClick={handleClickOpen /*deleteEvent(event, userId)*/}
+          onClick={handleClickOpen}
           variant="contained"
           color="primary"
         >
@@ -85,7 +85,8 @@ export const ViewParticipants = ({ event, userId }) => {
                     secondary={userData.email}
                   />
                 </ListItem>
-              ))}
+              )}
+							)}
             </List>
           </DialogContent>
           <DialogActions>

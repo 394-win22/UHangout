@@ -84,7 +84,6 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 
 
     const photoUrl = await uploadPhotoToStorage(image);
-    console.log(photoUrl);
 
     formValues.photoUrl = photoUrl;
 
@@ -97,11 +96,9 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   };
 
   const onImageChange = (e) => {
-    console.log("[onImageChange] run");
     const reader = new FileReader();
     let file = e.target.files[0];
     if (file) {
-      console.log(file);
       setFormValues({
         ...formValues,
         photoUrl: file.name,

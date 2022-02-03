@@ -8,7 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import Dialog from "@material-ui/core/Dialog";
-import { DeleteButton } from "./deleteButton";
+import { DeleteButton } from "./DeleteButton";
 import EditEventModal from "./EditEventModal";
 
 const theme = createTheme({
