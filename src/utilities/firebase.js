@@ -56,17 +56,10 @@ export const useData = (path, transform) => {
 
   useEffect(() => {
     const dbRef = ref(database, path);
-    const devMode =
-      !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-    if (devMode) {
-      console.log(`loading ${path}`);
-    }
     return onValue(
       dbRef,
       (snapshot) => {
         const val = snapshot.val();
-        if (devMode) {
-        }
         setData(transform ? transform(val) : val);
         setLoading(false);
         setError(null);
@@ -154,15 +147,4 @@ export const uploadPhotoToStorage = async (image) => {
   return uploadBytes(storageRef, image).then((snapshot)=>
       getDownloadURL(snapshot.ref).then((downloadURL) => downloadURL)
       )
-};
-
-
-
-//GET THIS TO RETURN THE URL OF THE IMAGE???
-export const getImageFromStorage = (imageName) => {
-  console.log(imageName);
-  getDownloadURL(sRef(storage, "images/" + imageName)).then((url) => {
-    console.log("url:",url);
-    return url;
-  });
 };

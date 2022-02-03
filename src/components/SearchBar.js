@@ -1,6 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import TextField from"@mui/material/TextField";
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -40,7 +38,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '40ch',
     },
   },
 }));

@@ -66,24 +66,16 @@ const EditEventModal = ({ event, open, handleOpen, handleClose }) => {
       setDateEmptyError(true);
       return;
     }
-
     const photoUrl = await uploadPhotoToStorage(image);
-    console.log(photoUrl);
-
     formValues.photoUrl = photoUrl;
-
     editEventInFirebase(event, formValues);
-
-    //NEED TO RERENDER
     handleClose();
   };
 
   const onImageChange = (e) => {
-    console.log("[onImageChange] run");
     const reader = new FileReader();
     let file = e.target.files[0];
     if (file) {
-      console.log(file);
       setFormValues({
         ...formValues,
         photoUrl: file.name,

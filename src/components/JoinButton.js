@@ -83,9 +83,13 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
     setOpen(false);
   };
 
+	const handleJoin = () => {
+		updatePeopleData(event, user.uid)
+    setOpen(false);
+
+	}
   let eventTime = moment(event.eventTime).format("MMMM Do YYYY, h:mm a");
 
-  console.log(user);
   if (!user) {
     return (
       <>
@@ -125,17 +129,17 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="error">
+            <Button
+							onClick={handleClose}
+							color="error">
               Cancel
             </Button>
             <Button
-              onClick={handleClose}
-              onClick={() => updatePeopleData(event, user.uid)}
+              onClick={handleJoin}
               variant="contained"
               color="success"
               autoFocus
-            >
-              Yes!
+            >Yes!
             </Button>
           </DialogActions>
         </Dialog>

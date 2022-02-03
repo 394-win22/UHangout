@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
 import { getUserDataFromUid } from "../utilities/firebase";
 import Button from "@mui/material/Button";
 import DialogActions from '@material-ui/core/DialogActions';
@@ -40,7 +39,7 @@ export const ViewParticipants = ({ event, userId }) => {
     var newList = [];
     Object.values(event.people).forEach(async (uid) => {
       await getUserDataFromUid(uid).then((userData) => {
-        newList.push(userData);
+        newList.push({uid: uid, ...userData});
       });
       setUserDataList(newList);
     });
@@ -57,10 +56,7 @@ export const ViewParticipants = ({ event, userId }) => {
   const sendToAll= ()=>{
     var emailList =[];
     /*userDataList.forEach(function(element){emailList.push(element.email+";")})*/
-
   };
-
-  console.log(userDataList);
 
 
 
@@ -68,7 +64,7 @@ export const ViewParticipants = ({ event, userId }) => {
     <>
       <ThemeProvider theme={theme}>
         <Button
-          onClick={handleClickOpen /*deleteEvent(event, userId)*/}
+          onClick={handleClickOpen}
           variant="contained"
           color="primary"
         >
@@ -80,27 +76,28 @@ export const ViewParticipants = ({ event, userId }) => {
           </DialogTitle>
           <DialogContent>
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-              {userDataList.map((userData) => (
-                <ListItem component={Button} href={`mailto:${userData.email}`}>
+              {userDataList.map((userData) => {
+								return (
+                <ListItem key={userData.uid} component={Button} href={`mailto:${userData.email}`}>
                   <ListItemAvatar>
                     <Avatar src={userData.photoURL}>
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={userData.displayName} secondary={userData.email} />
                 </ListItem>
-              ))}
+              )}
+							)}
             </List>
           </DialogContent>
           <DialogActions>
             {Object.values(event.people)[0] === userId && (
               <Button variant ='contained' onClick={sendToAll} color="secondary">
-                SEND GROUP MESSAGE
+                Send Group Message
               </Button>
             )}
             <Button variant = 'contained' onClick={handleClose} color="primary">
               Close
             </Button>
-            
           </DialogActions>
         </Dialog>
       </ThemeProvider>
