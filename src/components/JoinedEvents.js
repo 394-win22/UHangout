@@ -15,7 +15,6 @@ const JoinedEvents = ({ events, userList, user }) => {
           Events I'm Hosting
         </Typography>
         {events.map((event) => {
-          console.log(event.people);
           return (
             Object.values(event.people)[0] === user.uid && (
               <Event

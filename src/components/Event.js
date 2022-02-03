@@ -8,9 +8,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
 import { JoinButton } from "./JoinButton";
-import { getImageFromStorage } from "../utilities/firebase";
 import { LeaveButton } from "./LeaveButton";
-import { DeleteButton } from "./deleteButton";
+import { DeleteButton } from "./DeleteButton";
 import { useState } from "react";
 import { EditEventButton } from "./EditEventButton";
 import Collapse from "@mui/material/Collapse";
@@ -46,14 +45,14 @@ export default function Event({ event, userList, user }) {
     setExpanded(!expanded);
   };
   let descriptionPreviewLimit = 20;
+
   const [needExpansion, setNeedExpansion] = useState(
     event.description.length > descriptionPreviewLimit
   );
 
   const expandStr = needExpansion ? "..." : "";
 
-  console.log(user);
-  if (user) {
+if (user) {
     return (
       <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
         <CardHeader
@@ -169,14 +168,12 @@ export default function Event({ event, userList, user }) {
     <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
       <CardHeader
         title={event.name}
-        subheader={event.date}
         subheader={`Hosted by ${
           getUserFromUID(event.people[0], userList).displayName
         }`}
       ></CardHeader>
       <CardMedia
         component="img"
-        imageURL={event.photoUrl}
         height="140"
         image={event.photoUrl}
         alt={event.name}
@@ -202,7 +199,7 @@ export default function Event({ event, userList, user }) {
         </CardContent>
       </Collapse>
 
-      {needExpansion ? (
+      {needExpansion ?? (
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -211,8 +208,6 @@ export default function Event({ event, userList, user }) {
         >
           <ExpandMoreIcon />
         </ExpandMore>
-      ) : (
-        <></>
       )}
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>

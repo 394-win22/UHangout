@@ -8,7 +8,7 @@ export const Welcome = ({ user, events, userList }) => {
   const [query, setQuery] = useState("");
 
   let filteredEvents = events;
-  if (query != "") {
+  if (query !== "") {
     filteredEvents = events.filter((e) => {
       return (
         e.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -20,8 +20,6 @@ export const Welcome = ({ user, events, userList }) => {
     });
   }
 
-  console.log("HERE");
-  console.log(user);
 
   return (
     <div className="App">
