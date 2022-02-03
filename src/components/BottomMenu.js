@@ -13,22 +13,14 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-
-
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      // Purple and green play nicely together.
-      main: "#465a82",
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: "#11cb5f",
-    },
-  },
-});
-
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       // Purple and green play nicely together.
+//       main: "#465a82",
+//     },
+//   },
+// });
 
 const BottomMenu = ({ user }) => {
   const [open, setOpen] = useState(false);
@@ -48,13 +40,18 @@ const BottomMenu = ({ user }) => {
             icon={<TravelExploreIcon />}
             onClick={() => navigate("/")}
           />
-          <ThemeProvider theme={theme}>
+          {/* <ThemeProvider theme={theme}> */}
           <BottomNavigationAction
+            style={{
+              backgroundColor: "#465a82",
+              color: "white",
+              borderRadius: 5,
+            }}
             label="Add Event"
             icon={<AddIcon />}
             onClick={handleOpen}
           />
-          </ThemeProvider>
+          {/* </ThemeProvider> */}
           <AddEventModal
             user={user}
             open={open}
@@ -74,4 +71,3 @@ const BottomMenu = ({ user }) => {
 };
 
 export default BottomMenu;
-
