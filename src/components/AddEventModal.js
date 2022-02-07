@@ -65,6 +65,11 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const [locationEmptyError, setLocationEmptyError] = useState(false);
   const [location, setLocation] = useState("");
 
+	const handleCloseWrapper = () => {
+		setFormValues(defaultValues);
+		handleClose()
+	}
+
 
 
   const handleInputChange = (e) => {
@@ -83,7 +88,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
       return;
     }
 
-    if(formValues.location === null) {
+    if(formValues.location === null || formValues.location === "") {
       setLocationEmptyError(true);
       return;
     }
@@ -96,10 +101,13 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     setFormValues(defaultValues);
 
     //NEED TO RERENDER
-    handleClose();
+    handleCloseWrapper();
   };
 
+
+
 	const handleLocationChange = (location) => {
+		setLocationEmptyError(false);
 		setLocation(location);
 		setFormValues({
       ...formValues,
@@ -108,11 +116,9 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 	}
 
   const onImageChange = (e) => {
-    console.log("[onImageChange] run");
     const reader = new FileReader();
     let file = e.target.files[0];
     if (file) {
-      console.log(file);
       setFormValues({
         ...formValues,
         photoUrl: file.name,
@@ -139,7 +145,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={handleCloseWrapper}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ "& .MuiTextField-root": { m: 2, width: "25ch" } }}
@@ -206,18 +212,11 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
                   })
                 }
               }}
-              onChange={handleInputChange}
-              onSelect={(newValue) => {
-                setFormValues({
-                  ...formValues,
-                  location: newValue.valueOf(),
-                },
-                );
-                setLocationEmptyError(false);
-                console.log(newValue);
-              }}
             >
             </GooglePlacesAutocomplete>
+						{locationEmptyError && (
+              <Alert severity="error">Location field is required.</Alert>
+            )}
           </Box>
 
           <LocalizationProvider dateAdapter={DateAdapter}>
@@ -267,7 +266,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
           <Button variant="contained" endIcon={<SendIcon />} type="submit">
             Create
           </Button>
-          <Button type="button" onClick={() => handleClose()}>
+          <Button type="button" onClick={() => handleCloseWrapper()}>
             {" "}
             Cancel{" "}
           </Button>
