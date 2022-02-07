@@ -11,11 +11,9 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-
 
 
 const useStyles = makeStyles({
@@ -64,6 +62,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const [formValues, setFormValues] = useState(defaultValues);
   const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
+  const [locationEmptyError, setLocationEmptyError] = useState(false);
 
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -79,6 +78,11 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     e.preventDefault();
     if (formValues.eventTime === null) {
       setDateEmptyError(true);
+      return;
+    }
+
+    if(formValues.location === null) {
+      setLocationEmptyError(true);
       return;
     }
 
@@ -116,6 +120,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
       setImage(null);
     }
   };
+  
+
   return (
     <>
     <script
@@ -168,9 +174,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             <Typography variant="caption" > Enter Location</Typography>
             <GooglePlacesAutocomplete
               required
-              placeholder="Enter"
+              name="location"
               value={formValues.location}
-              onChange={handleInputChange}
               apiKey="AIzaSyARmOPd2291n0hygmYxmbPPwQXQACzfJOc"
               selectProps={{
                 styles: {
@@ -187,13 +192,24 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
                   }),
                   singleValue: (provided) => ({
                     ...provided,
-                    color: 'black',
+                    color: 'black'
                   })
+                }
+              }}
+              onChange={handleInputChange}
+              onSelect={(newValue) => {
+                setFormValues({
+                  ...formValues,
+                  location: newValue.valueOf(),
                 },
+                );
+                setLocationEmptyError(false);
+                console.log(newValue);
               }}
             >
             </GooglePlacesAutocomplete>
           </Box>
+
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
               name="eventTime"
