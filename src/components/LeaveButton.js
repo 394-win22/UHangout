@@ -27,21 +27,15 @@ export const LeaveButton = ({ event, userId, setJoined }) => {
   function updatePeopleData(event, userId) {
     // remove user from the array of users
     let newUserArray = Object.values(event.people).filter((user) => {
-      console.log("user in LeaveButton filter:", user);
-      console.log("userId in LeaveButton filter:", userId);
-      return user != userId
+      return user !== userId
     });
-    console.log("newUserArray", newUserArray);
-    console.log(event);
-    console.log(event.people);
-    console.log("leaving event, filtered array: ", userId);
     setData("events/" + event.id + "/people", newUserArray);
     setJoined(false);
   }
 
   //for dialog
   const [open, setOpen] = React.useState(false);
-  
+
   const handleClickOpen = () => {
     setOpen(true);
   };

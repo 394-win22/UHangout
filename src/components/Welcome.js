@@ -1,38 +1,79 @@
-import EventList from "./EventList";
-import Box from "@mui/material/Box";
-import BottomMenu from "./BottomMenu";
-import Button from "@mui/material/Button";
-import { signInWithGoogle, signOut } from "../utilities/firebase";
-const SignInButton = () => {
-  return (
-    <Button variant="contained" onClick={signInWithGoogle}>
-      Sign In
-    </Button>
-  );
-};
+import moment from "moment"
 
-const SignOutButton = () => (
-  <Button variant="contained" onClick={() => signOut()} sx={{ mb: 3 }}>
-    Sign Out
-  </Button>
-);
+import EventList from "./EventList"
+import { useState } from 'react'
+import { getUserFromUID } from "./Event"
+
+import TopNavBar from "./TopNavBar";
+
+const parseTime = input => {
+   let parsedTime = moment(input, [
+    'h',
+    'h a',
+    'h:mm',
+    'h:mm a',
+    'MMMM',
+    'MMMM D',
+    'MMMM Do',
+    'MMMM Do h',
+    'MMMM Do h:mm',
+    'MMMM Do h:mm a'
+  ])
+
+  if (parsedTime.format() != 'Invalid date')
+    return parsedTime
+  else return false
+}
+
+const matchTime = (parsedTime, duration, eventTime, rawInput) => {
+    if (!rawInput.includes(':')) {
+      return eventTime.format('MMMM Do') == parsedTime.format('MMMM Do') 
+      || eventTime.format('MMM').toLowerCase() == rawInput 
+      || eventTime.format('MMMM').toLowerCase() == rawInput
+    }
+
+    const parsedDuration = parseInt(duration)
+    if (!isNaN(parsedDuration)) {
+      const endTime = eventTime
+                      .add(duration, 'h')
+                      .add(1, 'm')
+                      .format('YYYY-MM-DD HH:mm')
+      eventTime.subtract(duration, 'h')
+      eventTime.subtract(2, 'm')
+
+      if (parsedTime.isBetween(eventTime, endTime))
+        return true
+    }
+
+    return false
+}
 
 export const Welcome = ({ user, events, userList }) => {
+  const [query, setQuery] = useState("");
+
+  let filteredEvents = events;
+  if (query != "") {
+    const lowerCaseQuery = query.toLowerCase()
+    const parsedTime = parseTime(lowerCaseQuery)
+  
+    filteredEvents = events.filter((e) => {
+      let eventTime = moment(e.eventTime)
+
+      return e.name.toLowerCase().includes(lowerCaseQuery)
+        || e.description.toLowerCase().includes(lowerCaseQuery)
+        || getUserFromUID(Object.values(e.people)[0], userList).displayName.toLowerCase().includes(lowerCaseQuery)
+        || (parsedTime && matchTime(parsedTime, e.duration, eventTime, lowerCaseQuery))
+    });
+  }
+
+
   return (
     <div className="App">
-      <h1> UHangout</h1>
-      {user ? (
-        <Box>
-          <SignOutButton />
-          <EventList events={events} userList={userList} user={user} />
-        </Box>
-      ) : (
-        <SignInButton />
-      )}{" "}
+      <TopNavBar isLoggedIn={user ? true : false} setQuery={setQuery} />
+      <EventList events={filteredEvents} userList={userList} user={user} />
       <br />
       <br />
       <br />
-      {user && <BottomMenu user={user} />}
     </div>
   );
 };

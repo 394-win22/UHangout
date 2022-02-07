@@ -11,11 +11,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 import Alert from "@mui/material/Alert";
-import moment from 'moment';
-
-import { pushData, uploadPhotoToStorage } from "../utilities/firebase";
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-
+import { setData, uploadPhotoToStorage } from "../utilities/firebase";
 
 const useStyles = makeStyles({
   container: {
@@ -43,41 +39,21 @@ const useStyles = makeStyles({
     overflowY: "scroll",
   },
 });
-function createEventInFirebase(event) {
-  pushData("/events", event);
+function editEventInFirebase(event, formValues) {
+  setData("events/" + event.id, formValues);
 }
 
-const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
+const EditEventModal = ({ event, open, handleOpen, handleClose }) => {
   const classes = useStyles();
-  const defaultValues = {
-    description: "",
-    duration: 0,
-    location: "",
-    max: 2,
-    name: "",
-    people: user ? [user.uid] : "",
-    photoUrl: "",
-    eventTime: null,
-  };
 
-  const [formValues, setFormValues] = useState(defaultValues);
+  const [formValues, setFormValues] = useState(event);
   const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
-  const [locationEmptyError, setLocationEmptyError] = useState(false);
-  const [location, setLocation] = useState("");
-
-	const handleCloseWrapper = () => {
-		setFormValues(defaultValues);
-		handleClose()
-	}
-
-
-
-  const [now, setNow] = useState(moment());
 
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+
     setFormValues({
       ...formValues,
       [name]: value,
@@ -86,38 +62,15 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //setNow(new Date());
     if (formValues.eventTime === null) {
       setDateEmptyError(true);
       return;
     }
-
-    if(formValues.location === null || formValues.location === "") {
-      setLocationEmptyError(true);
-      return;
-    }
-
     const photoUrl = await uploadPhotoToStorage(image);
-
     formValues.photoUrl = photoUrl;
-
-    createEventInFirebase(formValues);
-    setFormValues(defaultValues);
-
-    //NEED TO RERENDER
-    handleCloseWrapper();
+    editEventInFirebase(event, formValues);
+    handleClose();
   };
-
-
-
-	const handleLocationChange = (location) => {
-		setLocationEmptyError(false);
-		setLocation(location);
-		setFormValues({
-      ...formValues,
-      location: location.label,
-    });
-	}
 
   const onImageChange = (e) => {
     const reader = new FileReader();
@@ -138,18 +91,10 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
       setImage(null);
     }
   };
-
-
   return (
-    <>
-    <script
-      type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvv9b0WzuQ_KbzOUhbf5w-6b4IK-jponU&libraries=places"
-    />
-
     <Modal
       open={open}
-      onClose={handleCloseWrapper}
+      onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ "& .MuiTextField-root": { m: 2, width: "25ch" } }}
@@ -166,7 +111,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             align="center"
             className={classes.title}
           >
-            Add New Event
+            Edit Your Event
           </Typography>
           <TextField
             required
@@ -175,7 +120,6 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             onChange={handleInputChange}
             label="Event Name"
             variant="outlined"
-            inputProps={{ maxLength: 20 }}
           />
           <TextField
             required
@@ -186,53 +130,17 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             type="number"
             InputLabelProps={{ shrink: true }}
           />
-          {/* <TextField
+          <TextField
             required
             name="location"
             value={formValues.location}
             onChange={handleInputChange}
             label="Event Location"
-          /> */}
-          <Box sx={{maxWidth: 250, mx: "auto", background: "paper"}} textAlign="left" color="gray">
-            <Typography variant="caption" > Enter Location</Typography>
-            <GooglePlacesAutocomplete
-              required
-              name="location"
-              value={formValues.location}
-              apiKey="AIzaSyARmOPd2291n0hygmYxmbPPwQXQACzfJOc"
-              selectProps={{
-								location,
-								onChange: handleLocationChange,
-                styles: {
-                  input: (provided) => ({
-                    ...provided,
-                    color: 'black'
-                  }),
-                  menu: (provided) => ({
-                    ...provided,
-                    color: 'black',
-                    zIndex: 100,
-                    textAlign: 'left',
-                    placeholder: 'Enter'
-                  }),
-                  singleValue: (provided) => ({
-                    ...provided,
-                    color: 'black'
-                  })
-                }
-              }}
-            >
-            </GooglePlacesAutocomplete>
-						{locationEmptyError && (
-              <Alert severity="error">Location field is required.</Alert>
-            )}
-          </Box>
-
+          />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <MobileDateTimePicker
-              minDateTime={now}
               name="eventTime"
-              renderInput={(props) => <TextField {...props}/>}
+              renderInput={(props) => <TextField {...props} />}
               label="Date & Time *"
               value={formValues.eventTime}
               onChange={(newValue) => {
@@ -255,10 +163,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             label="Duration (Hours)"
             type="number"
             InputLabelProps={{ shrink: true }}
-            InputProps={{ inputProps: { min: 1} }}
           />{" "}
           <input
-            required
             type="file"
             accept="image/*"
             onChange={(e) => {
@@ -275,16 +181,15 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
             rows={4}
           />
           <Button variant="contained" endIcon={<SendIcon />} type="submit">
-            Create
+            Edit
           </Button>
-          <Button type="button" onClick={() => handleCloseWrapper()}>
+          <Button type="button" onClick={() => handleClose()}>
             {" "}
             Cancel{" "}
           </Button>
         </form>
       </Box>
     </Modal>
-    </>
   );
 };
-export default AddEventModal;
+export default EditEventModal;
