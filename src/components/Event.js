@@ -70,6 +70,9 @@ if (user) {
           alt={event.name}
         />
         <CardContent>
+        <Typography gutterBottom variant="body" component="div">
+            Location: {event.location} 
+          </Typography>
           <Typography gutterBottom variant="body" component="div">
             Time: {moment(event.eventTime).format("MMMM Do YYYY, h:mm a")}
           </Typography>
