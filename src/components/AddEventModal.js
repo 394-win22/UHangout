@@ -63,11 +63,13 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
   const [image, setImage] = useState(null);
   const [dateEmptyError, setDateEmptyError] = useState(false);
   const [locationEmptyError, setLocationEmptyError] = useState(false);
+  const [location, setLocation] = useState("");
+
+
 
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
     setFormValues({
       ...formValues,
       [name]: value,
@@ -87,17 +89,23 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
     }
 
     const photoUrl = await uploadPhotoToStorage(image);
-    console.log(photoUrl);
 
     formValues.photoUrl = photoUrl;
 
     createEventInFirebase(formValues);
     setFormValues(defaultValues);
 
-
     //NEED TO RERENDER
     handleClose();
   };
+
+	const handleLocationChange = (location) => {
+		setLocation(location);
+		setFormValues({
+      ...formValues,
+      location: location.label,
+    });
+	}
 
   const onImageChange = (e) => {
     console.log("[onImageChange] run");
@@ -120,14 +128,14 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
       setImage(null);
     }
   };
-  
+
 
   return (
     <>
     <script
       type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvv9b0WzuQ_KbzOUhbf5w-6b4IK-jponU&libraries=places"
-    /> 
+    />
 
     <Modal
       open={open}
@@ -178,6 +186,8 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
               value={formValues.location}
               apiKey="AIzaSyARmOPd2291n0hygmYxmbPPwQXQACzfJOc"
               selectProps={{
+								location,
+								onChange: handleLocationChange,
                 styles: {
                   input: (provided) => ({
                     ...provided,
@@ -187,7 +197,7 @@ const AddEventModal = ({ user, open, handleOpen, handleClose }) => {
                     ...provided,
                     color: 'black',
                     zIndex: 100,
-                    textAlign: 'left', 
+                    textAlign: 'left',
                     placeholder: 'Enter'
                   }),
                   singleValue: (provided) => ({
