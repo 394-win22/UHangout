@@ -25,10 +25,14 @@ const theme = createTheme({
   },
 });
 
-export const ViewParticipants = ({ event, userId }) => {
+export const ViewParticipants = ({ event, user }) => {
+
   const [open, setOpen] = React.useState(false);
 
   const [userDataList, setUserDataList] = React.useState([]);
+
+	let userId = ""
+	if (user) userId = user.uid;
 
   useEffect(() => {
     var newList = [];

@@ -96,7 +96,7 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
         <ThemeProvider theme={theme}>
           <Tooltip title="Please Log In">
             <span>
-              <Button disabled variant="contained" color="secondary">
+              <Button disabled variant="contained" color="secondary" style={{marginTop: "10px"}}>
                 Join Event
               </Button>
             </span>
@@ -109,7 +109,7 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button onClick={handleClickOpen} variant="contained" color="secondary">
+        <Button onClick={handleClickOpen} variant="contained" color="secondary" style={{marginTop: "10px"}}>
           Join Event
         </Button>
         <Dialog

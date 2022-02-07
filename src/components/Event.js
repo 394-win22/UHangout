@@ -17,6 +17,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import { ViewParticipants } from "./ViewParticipants";
+import LoggedInActions from "./LoggedInActions";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -226,7 +227,6 @@ if (user) {
           </Typography>
         </CardContent>
       </Collapse>
-
       <CardActions style={{ justifyContent: "center" }}>
         <JoinButton
           key={event}
