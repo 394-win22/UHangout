@@ -7,8 +7,24 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
-import { getDatabase, onValue, ref, set, push, query, orderByChild, startAt, remove} from "firebase/database";
-import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut, useAuthState} from 'firebase/auth';
+import {
+  getDatabase,
+  onValue,
+  ref,
+  set,
+  push,
+  query,
+  orderByChild,
+  startAt,
+  remove,
+} from "firebase/database";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onIdTokenChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7mpjxeDj2hYyFJ4JkXhctKL2lzjRb5tM",
@@ -81,7 +97,10 @@ export const useEvents = (path, transform) => {
   const [error, setError] = useState();
 
   useEffect(() => {
-    const orderByRef = query(ref(database, "/events"), orderByChild('eventTime'));
+    const orderByRef = query(
+      ref(database, "/events"),
+      orderByChild("eventTime")
+    );
     const startAtRef = query(orderByRef, startAt(Date.now()));
     return onValue(
       startAtRef,
@@ -129,22 +148,17 @@ export const getUserDataFromUid = async (uid) => {
   await onValue(
     dbRef,
     (snapshot) => {
-      const val = snapshot.val();
       // return val;
       output = snapshot.val();
     },
-    (error) => {
-
-    }
+    (error) => {}
   );
   return output;
-}
-
-
+};
 
 export const uploadPhotoToStorage = async (image) => {
   const storageRef = sRef(storage, "images/" + image.name);
-  return uploadBytes(storageRef, image).then((snapshot)=>
-      getDownloadURL(snapshot.ref).then((downloadURL) => downloadURL)
-      )
+  return uploadBytes(storageRef, image).then((snapshot) =>
+    getDownloadURL(snapshot.ref).then((downloadURL) => downloadURL)
+  );
 };

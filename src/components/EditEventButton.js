@@ -1,14 +1,7 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { purple } from "@mui/material/colors";
-import { deleteData } from "../utilities/firebase";
 import Button from "@mui/material/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import Dialog from "@material-ui/core/Dialog";
-import { DeleteButton } from "./DeleteButton";
 import EditEventModal from "./EditEventModal";
 
 const theme = createTheme({
@@ -24,7 +17,7 @@ const theme = createTheme({
   },
 });
 
-export const EditEventButton = ({ event, userId }) => {
+export const EditEventButton = ({ event }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -38,7 +31,11 @@ export const EditEventButton = ({ event, userId }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button onClick={handleClickOpen} variant="contained" style={{marginTop: "10px"}}>
+        <Button
+          onClick={handleClickOpen}
+          variant="contained"
+          style={{ marginTop: "10px" }}
+        >
           Edit Event
         </Button>
         <EditEventModal

@@ -67,7 +67,7 @@ export const LeaveButton = ({ event, userId, setJoined }) => {
           </DialogTitle>
           <DialogActions>
             <Button onClick={handleClose} color="error">Cancel</Button>
-            <Button onClick={handleClose} onClick={() => updatePeopleData(event, userId)} variant="contained" color="success" autoFocus>
+            <Button onClick={() => updatePeopleData(event, userId)} variant="contained" color="success" autoFocus>
               Confirm
             </Button>
           </DialogActions>
