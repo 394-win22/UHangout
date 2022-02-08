@@ -1,7 +1,6 @@
 import React from "react";
 import Event from "./Event";
 import Box from "@mui/material/Box";
-import { useUserState } from "../utilities/firebase";
 import Typography from "@mui/material/Typography";
 
 const JoinedEvents = ({ events, userList, user }) => {
@@ -30,7 +29,6 @@ const JoinedEvents = ({ events, userList, user }) => {
           Events I'm Joining
         </Typography>
         {events.map((event) => {
-          console.log(event.people);
           return (
             Object.values(event.people).includes(user.uid) &&
             Object.values(event.people)[0] !== user.uid && (

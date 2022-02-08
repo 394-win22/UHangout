@@ -1,11 +1,13 @@
-import { Button } from '@mui/material'
+import { Button } from "@mui/material";
 
-import { signOut } from '../utilities/firebase'
+import { signOut } from "../utilities/firebase";
 
 const SignOutButton = () => (
-    <div>
-        <Button color="inherit" onClick={signOut}>Sign out</Button>
-    </div>
-)
+  <div>
+    <Button color="inherit" onClick={signOut}>
+      Sign out
+    </Button>
+  </div>
+);
 
-export default SignOutButton
+export default SignOutButton;

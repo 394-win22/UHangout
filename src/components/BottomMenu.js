@@ -3,15 +3,12 @@ import AddEventModal from "./AddEventModal";
 import Paper from "@mui/material/Paper";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import { withStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 
 //icons
 import AddIcon from "@mui/icons-material/Add";
-import ForumIcon from "@mui/icons-material/Forum";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // const theme = createTheme({
 //   palette: {

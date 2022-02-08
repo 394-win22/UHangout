@@ -38,7 +38,9 @@ function joinEvent(eventList, userId, eventToJoin, setJoined) {
   );
   const range1 = moment.range(startTime, endTime);
   var canJoin = 1;
+  // eslint-disable-next-line no-lone-blocks
   {
+    // eslint-disable-next-line array-callback-return
     eventList.map((event) => {
       if (Object.values(event.people).includes(userId)) {
         const newStart = moment(event.eventTime);
@@ -83,11 +85,10 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
     setOpen(false);
   };
 
-	const handleJoin = () => {
-		updatePeopleData(event, user.uid)
+  const handleJoin = () => {
+    updatePeopleData(event, user.uid);
     setOpen(false);
-
-	}
+  };
   let eventTime = moment(event.eventTime).format("MMMM Do YYYY, h:mm a");
 
   if (!user) {
@@ -96,7 +97,12 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
         <ThemeProvider theme={theme}>
           <Tooltip title="Please Log In">
             <span>
-              <Button disabled variant="contained" color="secondary" style={{marginTop: "10px"}}>
+              <Button
+                disabled
+                variant="contained"
+                color="secondary"
+                style={{ marginTop: "10px" }}
+              >
                 Join Event
               </Button>
             </span>
@@ -109,7 +115,12 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button onClick={handleClickOpen} variant="contained" color="secondary" style={{marginTop: "10px"}}>
+        <Button
+          onClick={handleClickOpen}
+          variant="contained"
+          color="secondary"
+          style={{ marginTop: "10px" }}
+        >
           Join Event
         </Button>
         <Dialog
@@ -129,9 +140,7 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button
-							onClick={handleClose}
-							color="error">
+            <Button onClick={handleClose} color="error">
               Cancel
             </Button>
             <Button
@@ -139,7 +148,8 @@ export const JoinButton = ({ eventList, event, user, setJoined }) => {
               variant="contained"
               color="success"
               autoFocus
-            >Yes!
+            >
+              Yes!
             </Button>
           </DialogActions>
         </Dialog>

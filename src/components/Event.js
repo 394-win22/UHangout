@@ -17,7 +17,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import { ViewParticipants } from "./ViewParticipants";
-import LoggedInActions from "./LoggedInActions";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -40,6 +39,7 @@ const isUIDinJoinedMembers = (uid, joinedMembers) => {
 
 export default function Event({ eventList, event, userList, user }) {
   const currCapacity = Object.keys(event.people).length;
+  // eslint-disable-next-line no-unused-vars
   let [joined, setJoined] = useState(false); // handle can't-join-twice later
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -47,32 +47,30 @@ export default function Event({ eventList, event, userList, user }) {
   };
   let descriptionPreviewLimit = 20;
 
-  const [needExpansion, setNeedExpansion] = useState(
+  const [needExpansion] = useState(
     event.description.length > descriptionPreviewLimit
   );
 
   const expandStr = needExpansion ? "..." : "";
 
-if (user) {
+  if (user) {
     return (
       <Card sx={{ maxWidth: 345, mb: 5, textAlign: "center" }}>
         <CardHeader
           title={event.name}
-          subheader={event.date}
           subheader={`Hosted by ${
             getUserFromUID(event.people[0], userList).displayName
           }`}
         ></CardHeader>
         <CardMedia
           component="img"
-          imageURL={event.photoUrl}
           height="140"
           image={event.photoUrl}
           alt={event.name}
         />
         <CardContent>
-        <Typography gutterBottom variant="body" component="div">
-            Location: {event.location} 
+          <Typography gutterBottom variant="body" component="div">
+            Location: {event.location}
           </Typography>
           <Typography gutterBottom variant="body" component="div">
             Time: {moment(event.eventTime).format("MMMM Do YYYY, h:mm a")}
@@ -135,7 +133,6 @@ if (user) {
               <EditEventButton
                 key={event}
                 event={event}
-                userId={user.uid}
                 setJoined={setJoined}
               />{" "}
               <DeleteButton
@@ -155,13 +152,13 @@ if (user) {
           ) : currCapacity >= event.max ? (
             <Button disabled> Event Full </Button>
           ) : (
-          <JoinButton
-            eventList={eventList}
-            key={event}
-            event={event}
-            user={user}
-            setJoined={setJoined}
-          />
+            <JoinButton
+              eventList={eventList}
+              key={event}
+              event={event}
+              user={user}
+              setJoined={setJoined}
+            />
           )}
         </CardActions>
       </Card>

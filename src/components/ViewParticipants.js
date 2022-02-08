@@ -25,20 +25,16 @@ const theme = createTheme({
   },
 });
 
-export const ViewParticipants = ({ event, user }) => {
-
+export const ViewParticipants = ({ event, userId }) => {
   const [open, setOpen] = React.useState(false);
 
   const [userDataList, setUserDataList] = React.useState([]);
-
-	let userId = ""
-	if (user) userId = user.uid;
 
   useEffect(() => {
     var newList = [];
     Object.values(event.people).forEach(async (uid) => {
       await getUserDataFromUid(uid).then((userData) => {
-        newList.push({uid: uid, ...userData});
+        newList.push({ uid: uid, ...userData });
       });
       setUserDataList(newList);
     });
@@ -68,11 +64,7 @@ export const ViewParticipants = ({ event, user }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button
-          onClick={handleClickOpen}
-          variant="contained"
-          color="primary"
-        >
+        <Button onClick={handleClickOpen} variant="contained" color="primary">
           View Participants
         </Button>
         <Dialog open={open} onClose={handleClose}>

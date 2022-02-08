@@ -2,9 +2,7 @@ import { useEffect } from "react";
 import { Welcome } from "./components/Welcome";
 import {
   useData,
-  signInWithGoogle,
   useUserState,
-  signOut,
   saveUserToDb,
   useEvents,
 } from "./utilities/firebase.js";
