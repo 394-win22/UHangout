@@ -66,7 +66,10 @@ const EditEventModal = ({ event, open, handleOpen, handleClose }) => {
       setDateEmptyError(true);
       return;
     }
-    const photoUrl = await uploadPhotoToStorage(image);
+    let photoUrl = event.photoUrl
+    if(image){
+      photoUrl = await uploadPhotoToStorage(image);
+    }
     formValues.photoUrl = photoUrl;
     editEventInFirebase(event, formValues);
     handleClose();
