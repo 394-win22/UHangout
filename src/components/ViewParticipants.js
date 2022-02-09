@@ -27,7 +27,7 @@ const theme = createTheme({
 
 export const ViewParticipants = ({ event, userId }) => {
   const [open, setOpen] = React.useState(false);
-
+  const joined = Object.values(event.people).includes(userId);
   const [userDataList, setUserDataList] = React.useState([]);
 
   useEffect(() => {
@@ -71,17 +71,30 @@ export const ViewParticipants = ({ event, userId }) => {
           <DialogTitle>Participants</DialogTitle>
           <DialogContent>
             <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-              {userDataList.map((userData) => (
-                <ListItem component={Button} href={`mailto:${userData.email}`}>
-                  <ListItemAvatar>
-                    <Avatar src={userData.photoURL}></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={userData.displayName}
-                    secondary={userData.email}
-                  />
-                </ListItem>
-              ))}
+              {joined &&
+                userDataList.map((userData) => (
+                  <ListItem
+                    component={Button}
+                    href={`mailto:${userData.email}`}
+                  >
+                    <ListItemAvatar>
+                      <Avatar src={userData.photoURL}></Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={userData.displayName}
+                      secondary={userData.email}
+                    />
+                  </ListItem>
+                ))}
+              {!joined &&
+                userDataList.map((userData) => (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar src={userData.photoURL}></Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={userData.displayName} />
+                  </ListItem>
+                ))}
             </List>
           </DialogContent>
           <DialogActions>
